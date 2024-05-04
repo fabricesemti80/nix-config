@@ -107,11 +107,8 @@
   # TODO: Set your hostname
   networking.hostName = "magnus";
 
-  # Allow unfree packages
+  # Allow unfree packages systemwide
   nixpkgs.config.allowUnfree = true;
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
 
   # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
   users.users = {
