@@ -70,6 +70,9 @@
 
   # FIXME: Add the rest of your current configuration
 
+  # https://nixos-and-flakes.thiscute.world/best-practices/remote-deployment#remote-deployment
+  security.sudo.wheelNeedsPassword = false;
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
