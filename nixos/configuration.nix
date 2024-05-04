@@ -104,6 +104,9 @@
   # Enable automatic login for the user.
   services.getty.autologinUser = "fs";
 
+  # Enable VSCode Server
+  services.vscode-server.enable = true;
+
   # TODO: Set your hostname
   networking.hostName = "magnus";
 

@@ -12,12 +12,16 @@
     # Home manager
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    # VSCode
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
   };
 
   outputs = {
     self,
     nixpkgs,
     home-manager,
+    vscode-server,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -56,6 +60,8 @@
       magnus = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         modules = [
+          # Enable VSCode
+          vscode-server.nixosModules.default          
           # > Our main nixos configuration file <
           ./nixos/configuration.nix
         ];
