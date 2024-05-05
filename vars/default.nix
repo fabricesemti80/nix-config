@@ -3,11 +3,10 @@
   
 
   username = "fs";
-  # domain = inputs.nix-secrets.domain; #TODO: create secrets
-  # userFullName = inputs.nix-secrets.full-name; #TODO: create secrets
+  domain = inputs.nix-secrets.domain;
+  userFullName = inputs.nix-secrets.full-name; 
   handle = "fabricesemti";
-  # userEmail = inputs.nix-secrets.user-email; #TODO: create secrets
-  # gitEmail = "7410928+emergentmind@users.noreply.github.com"; #TODO: create secrets
-  # workEmail = inputs.nix-secrets.work-email; #TODO: create secrets
+  gitEmail = "1234+fabricesemti80@users.noreply.github.com";
+  workEmail = inputs.nix-secrets.work-email; 
   networking = import ./networking.nix { inherit lib; };
 }
