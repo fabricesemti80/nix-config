@@ -84,9 +84,11 @@
     forAllSystems = nixpkgs.lib.genAttrs systems;
 
   in {
-    # Your custom packages
-    # Accessible through 'nix build', 'nix shell', etc
-    packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+
+    #TODO: cleanup the next 3 lines - they are replaced in the "Your custom packages.." block
+    # # Your custom packages
+    # # Accessible through 'nix build', 'nix shell', etc
+    # packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
     
     # # Formatter for your nix files, available through 'nix fmt'
     # # Other options beside 'alejandra' include 'nixpkgs-fmt'
@@ -98,15 +100,25 @@
         nixpkgs.legacyPackages.${system}.nixpkgs-fmt
       );
 
-    # Your custom packages and modifications, exported as overlays
+    #################### ? -------------------------------------------------------------------> Your custom packages and modifications
+    # Custom modifications/overrides to upstream packages
     overlays = import ./overlays {inherit inputs;};
+
     # Reusable nixos modules you might want to export
     # These are usually stuff you would upstream into nixpkgs
     nixosModules = import ./modules/nixos;
+
     # Reusable home-manager modules you might want to export
     # These are usually stuff you would upstream into home-manager
     homeManagerModules = import ./modules/home-manager;
-      
+
+    # Custom packages to be shared or upstreamed.
+    packages = forAllSystems
+      (system:
+        let pkgs = nixpkgs.legacyPackages.${system};
+        in import ./pkgs { inherit pkgs; }
+      );
+
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
