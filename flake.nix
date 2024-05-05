@@ -125,8 +125,10 @@
         in import ./shell.nix { inherit pkgs; }
       );
 
+    #################### NixOS Configurations ####################
     # NixOS configuration entrypoint
-    # Available through 'nixos-rebuild --flake .#your-hostname'
+    # Building configurations available through `just rebuild` or `nixos-rebuild --flake .#hostname` #FIXME: review  and fix 'just rebuild'
+
     nixosConfigurations = {
       magnus = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
