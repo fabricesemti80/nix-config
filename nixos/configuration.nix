@@ -114,10 +114,20 @@
   nixpkgs.config.allowUnfree = true;
 
   # System-wide packages
-  environment.systemPackages = [
-    pkgs.nixpkgs-fmt
-    pkgs.go-task
+  environment.systemPackages = [       
+    pkgs.age
+    pkgs.direnv
     pkgs.duf
+    pkgs.git
+    pkgs.go-task
+    pkgs.home-manager
+    pkgs.just
+    pkgs.libiconv
+    pkgs.nix
+    pkgs.nixpkgs-fmt
+    pkgs.pre-commit
+    pkgs.ssh-to-age
+    pkgs.sops    
   ];
 
   # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.

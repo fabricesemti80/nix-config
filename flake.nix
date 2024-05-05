@@ -117,6 +117,14 @@
         in import ./pkgs { inherit pkgs; }
       );
 
+    #################### ? -------------------------------------------------------------------> Dev shell
+    # Shell configured with packages that are typically only needed when working on or with nix-config.
+    devShells = forAllSystems
+      (system:
+        let pkgs = nixpkgs.legacyPackages.${system};
+        in import ./shell.nix { inherit pkgs; }
+      );
+
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
