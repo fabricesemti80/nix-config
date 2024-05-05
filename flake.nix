@@ -36,9 +36,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    vscode-server.url =
-      "github:nix-community/nixos-vscode-server"; # VSCode Server support - "https://github.com/nix-community/nixos-vscode-server"
-
+   # VSCode server to allow connection in eeditor - "https://github.com/nix-community/nixos-vscode-server"
+    vscode-server = {
+      url =  "github:nix-community/nixos-vscode-server";
+    };
 
     #################### ? -------------------------------------------------------------------> Personal Repositories 
 
@@ -61,7 +62,8 @@
   
   let
     inherit (self) outputs;
-    # Supported systems for your flake packages, shell, etc.
+    
+    #################### ? -------------------------------------------------------------------> Supported systems for your flake packages, shell, etc.
     systems = [
       "aarch64-linux"
       "i686-linux"
@@ -69,16 +71,37 @@
       "aarch64-darwin"
       "x86_64-darwin"
     ];
-    # This is a function that generates an attribute by calling a function you
+    
+    #################### ? -------------------------------------------------------------------> This is a function that generates an attribute by calling a function you
     # pass to it, with each system as an argument
     forAllSystems = nixpkgs.lib.genAttrs systems;
+
+    #################### ? -------------------------------------------------------------------> flake-wide variables
+    vars = { # Variables Used In Flake
+        user = "fabrice";
+        fullName = "Fabrice Semti";
+        fullEmail = "emilfabrice@gmail.com";
+        # location = "$HOME/.setup"; #TODO: Change when final
+        pubKey =
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBJpVWYmXPpqVmlHdixDR//vdfD+sryvYmpH2Dj1/Otx";
+        terminal = "kitty";
+        editor = "nvim";
+      };
+
   in {
     # Your custom packages
     # Accessible through 'nix build', 'nix shell', etc
     packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
-    # Formatter for your nix files, available through 'nix fmt'
-    # Other options beside 'alejandra' include 'nixpkgs-fmt'
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+    
+    # # Formatter for your nix files, available through 'nix fmt'
+    # # Other options beside 'alejandra' include 'nixpkgs-fmt'
+    # formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+    # TODO change this to something that has better looking output rules
+    # Nix formatter available through 'nix fmt' https://nix-community.github.io/nixpkgs-fmt
+    formatter = forAllSystems
+      (system:
+        nixpkgs.legacyPackages.${system}.nixpkgs-fmt
+      );
 
     # Your custom packages and modifications, exported as overlays
     overlays = import ./overlays {inherit inputs;};
@@ -88,14 +111,6 @@
     # Reusable home-manager modules you might want to export
     # These are usually stuff you would upstream into home-manager
     homeManagerModules = import ./modules/home-manager;
-
-    # TODO change this to something that has better looking output rules
-    # Nix formatter available through 'nix fmt' https://nix-community.github.io/nixpkgs-fmt
-    formatter = forAllSystems
-      (system:
-        nixpkgs.legacyPackages.${system}.nixpkgs-fmt
-      );
-
       
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'

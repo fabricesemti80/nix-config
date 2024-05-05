@@ -2,8 +2,8 @@
 
 #TODO: replace this with just/make/tasks!
 
-# Update repo
-git pull \
+# # Update repo
+# git pull \
 # update flake
 nix flake update \
 # Apply flake
