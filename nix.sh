@@ -3,7 +3,7 @@
 #TODO: replace this with just/make/tasks!
 
 # # Update repo
-# git pull \
+git add . \
 # update flake
 nix flake update \
 # Apply flake

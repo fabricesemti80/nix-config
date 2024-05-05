@@ -136,7 +136,7 @@
           # Enable VSCode
           vscode-server.nixosModules.default          
           # > Our main nixos configuration file <
-          ./nixos/configuration.nix
+          ./hosts/magnus
         ];
       };
     };
