@@ -7,7 +7,7 @@
 
 
 # edc
-flameshot ?? maybe somewhere else
+# flameshot ?? maybe somewhere else
 
 # Productivity
 remmina
