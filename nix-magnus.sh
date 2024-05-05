@@ -2,14 +2,16 @@
 
 #TODO: replace this with just/make/tasks!
 
-# Get current hostname
+# Get target host
 export TARGET_HOST=magnus
-export CURRENT_HOST=$(hostname)
 
 # Check if the current host matches the TARGET_HOST
-if [ "$CURRENT_HOST" = "$TARGET_HOST" ]; then
+if [ ${HOSTNAME}  = ${TARGET_HOST} ]; then
   # Perform local build
-  sudo nixos-rebuild switch --flake .#${TARGET_HOST}
+  # Apply flake
+  sudo nixos-rebuild switch --flake .#${HOSTNAME} \
+  # Apply Home manager
+  home-manager switch --flake .#${USER}@${HOSTNAME} 
 else
   # Perform remote build
   sudo nixos-rebuild switch --flake .#${TARGET_HOST} \
