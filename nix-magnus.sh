@@ -2,12 +2,17 @@
 
 #TODO: replace this with just/make/tasks!
 
-export TARGET_HOST=magnus
+# Get current hostname
+TARGET_HOST=magnus
+CURRENT_HOST=$(hostname)
 
-# Update repo
-git pull \
-# update flake
-nix flake update \
-# Remote deployment
-nixos-rebuild switch --flake .#${TARGET_HOST} \
-  --target-host root@${TARGET_HOST} --build-host root@${TARGET_HOST}--verbose
+# Check if the current host matches the TARGET_HOST
+if [ "$CURRENT_HOST" = "$TARGET_HOST" ]; then
+  # Perform local build
+  nixos-rebuild switch --flake .#${TARGET_HOST} \
+    --build-host localhost --verbose
+else
+  # Perform remote build
+  nixos-rebuild switch --flake .#${TARGET_HOST} \
+    --target-host root@${TARGET_HOST} --build-host root@${TARGET_HOST} --verbose
+fi
