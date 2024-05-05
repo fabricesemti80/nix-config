@@ -6,6 +6,8 @@ export TARGET_HOST=magnus
 
 # Update repo
 git pull \
+# update flake
+nix flake update \
 # Remote deployment
 nixos-rebuild switch --flake .#${TARGET_HOST} \
   --target-host root@${TARGET_HOST} --build-host root@${TARGET_HOST}--verbose
