@@ -22,14 +22,14 @@ rebuild-post:
 rebuild:
 	just rebuild-pre
 	scripts/system-flake-rebuild.sh
-	just rebuild-extensions-lite
-	just rebuild-post
+	# just rebuild-extensions-lite #TODO: investigate and re-enable -->
+	# just rebuild-post #TODO: investigate and re-enable -->
 
 rebuild-full:
 	just rebuild-pre
 	scripts/system-flake-rebuild.sh
-	just rebuild-extensions
-	just rebuild-post
+	# just rebuild-extensions #TODO: investigate and re-enable -->
+	# just rebuild-post #TODO: investigate and re-enable -->
 
 rebuild-trace:
 	just rebuild-pre
@@ -78,17 +78,18 @@ update-nix-secrets:
 	(cd ../nix-secrets && git fetch && git rebase) || true
 	nix flake lock --update-input nix-secrets
 
-#################### Voice related vscode extensions stuff for fidgetingbits ####################
-# Until I know how to pin pre-built vscode extensions, this rebuilds and
-# installs custom extensions after a rebuild
-rebuild-extensions:
-	build-cursorless-pr-bundle || true
-	build-command-server-pr-bundle || true
+#TODO: investigate and re-enable -->
+# #################### Voice related vscode extensions stuff for fidgetingbits ####################
+# # Until I know how to pin pre-built vscode extensions, this rebuilds and
+# # installs custom extensions after a rebuild
+# rebuild-extensions:
+# 	build-cursorless-pr-bundle || true
+# 	build-command-server-pr-bundle || true
 
-# Faster, don't build the extensions, just install them
-rebuild-extensions-lite:
-	build-cursorless-pr-bundle lite || true
-	build-command-server-pr-bundle lite || true
+# # Faster, don't build the extensions, just install them
+# rebuild-extensions-lite:
+# 	build-cursorless-pr-bundle lite || true
+# 	build-command-server-pr-bundle lite || true
 
 #################### Installation ####################
 iso:
