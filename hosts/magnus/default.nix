@@ -40,7 +40,7 @@
   #   (configLib.relativeToRoot "hosts/common/optional/hyprland.nix") # window manager
 
   #   #################### Users to Create ####################
-  #  (configLib.relativeToRoot "hosts/common/users/fs")
+   (configLib.relativeToRoot "hosts/common/users/fs")
 
   ];
 
