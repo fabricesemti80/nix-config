@@ -27,13 +27,13 @@
 
     #################### Required Configs ####################
     ./hardware-configuration.nix
-    # (configLib.relativeToRoot "hosts/common/core")
+    (configLib.relativeToRoot "hosts/common/core")
 
     #################### Host-specific Optional Configs ####################
     # (configLib.relativeToRoot "hosts/common/optional/yubikey")
     # (configLib.relativeToRoot "hosts/common/optional/services/clamav.nix") # depends on optional/msmtp.nix
     # (configLib.relativeToRoot "hosts/common/optional/msmtp.nix") # required for emailing clamav alerts
-    # (configLib.relativeToRoot "hosts/common/optional/services/openssh.nix")
+    (configLib.relativeToRoot "hosts/common/optional/services/openssh.nix")
 
   ];
 
@@ -81,8 +81,8 @@
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
   };
 
-  # https://nixos-and-flakes.thiscute.world/best-practices/remote-deployment#remote-deployment
-  security.sudo.wheelNeedsPassword = false;
+  # # https://nixos-and-flakes.thiscute.world/best-practices/remote-deployment#remote-deployment
+  # security.sudo.wheelNeedsPassword = false;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -91,23 +91,23 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
-  time.timeZone = "Europe/London";
+  # # Set your time zone.
+  # time.timeZone = "Europe/London";
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_GB.UTF-8";
+  # # Select internationalisation properties.
+  # i18n.defaultLocale = "en_GB.UTF-8";
 
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_GB.UTF-8";
-    LC_IDENTIFICATION = "en_GB.UTF-8";
-    LC_MEASUREMENT = "en_GB.UTF-8";
-    LC_MONETARY = "en_GB.UTF-8";
-    LC_NAME = "en_GB.UTF-8";
-    LC_NUMERIC = "en_GB.UTF-8";
-    LC_PAPER = "en_GB.UTF-8";
-    LC_TELEPHONE = "en_GB.UTF-8";
-    LC_TIME = "en_GB.UTF-8";
-  };
+  # i18n.extraLocaleSettings = {
+  #   LC_ADDRESS = "en_GB.UTF-8";
+  #   LC_IDENTIFICATION = "en_GB.UTF-8";
+  #   LC_MEASUREMENT = "en_GB.UTF-8";
+  #   LC_MONETARY = "en_GB.UTF-8";
+  #   LC_NAME = "en_GB.UTF-8";
+  #   LC_NUMERIC = "en_GB.UTF-8";
+  #   LC_PAPER = "en_GB.UTF-8";
+  #   LC_TELEPHONE = "en_GB.UTF-8";
+  #   LC_TIME = "en_GB.UTF-8";
+  # };
 
   # Configure keymap in X11
   services.xserver = {
@@ -123,11 +123,11 @@
 
   networking.hostName = "magnus";
 
-  # Allow unfree packages systemwide
-  nixpkgs.config.allowUnfree = true;
+  # # Allow unfree packages systemwide
+  # nixpkgs.config.allowUnfree = true;
 
   # System-wide packages
-  environment.systemPackages = [       
+  environment.systemPackages = [
     pkgs.age
     pkgs.direnv
     pkgs.duf
@@ -141,7 +141,7 @@
     pkgs.pre-commit
     pkgs.ripgrep
     pkgs.ssh-to-age
-    pkgs.sops    
+    pkgs.sops
   ];
 
   # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
@@ -162,7 +162,7 @@
          openssh.authorizedKeys.keys = [
         # Allow connect with your ssh key as the `root` account - https://nixos-and-flakes.thiscute.world/best-practices/remote-deployment#remote-deployment
 	      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIToeo6ZJO0VXyAKlFuoq7e3GFfa9xmb7UhaI6LGHc2t"
-      ];   
+      ];
     };
   };
 
