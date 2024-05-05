@@ -29,9 +29,10 @@ tasks:
       - nix flake update
 
   nix-host-current:
-    desc: Apply configuration --> host / ${HOSTNAME} 
+    desc: Apply configuration on the current host
     cmds:
-      - sudo nixos-rebuild switch --flake .#magnus   
+      - echo "Rebuilding  $(hostname)"
+      - sudo nixos-rebuild switch --flake .#$(hostname)  
 
   nix-gc:
     desc: Clean previous Nix generations and display results

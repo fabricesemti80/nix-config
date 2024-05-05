@@ -44,12 +44,12 @@
     #################### ? -------------------------------------------------------------------> Personal Repositories 
 
     #TODO: add this back latter
-    # # Private secrets repo.  See ./docs/secretsmgmt.md
-    # # Authenticate via ssh and use shallow clone
-    # nix-secrets = {
-    #   url = "git+ssh://git@gitlab.com/fabricesemti/nix-secrets.git?ref=main&shallow=1";
-    #   flake = false;
-    # };
+    # Private secrets repo.  See ./docs/secretsmgmt.md
+    # Authenticate via ssh and use shallow clone
+    nix-secrets = {
+      url = "git+ssh://git@gitlab.com/fabricesemti/nix-secrets.git?ref=main&shallow=1";
+      flake = false;
+    };
 
   };
 
@@ -74,9 +74,11 @@
     ];
     inherit (nixpkgs) lib;
 
-    #################### ? -------------------------------------------------------------------> Load variables from the './vars' folder
+    #################### ? -------------------------------------------------------------------> Load custom stuff
+    # variables from ./var
     configVars = import ./vars { inherit inputs lib; };
-    
+    configLib = import ./lib { inherit lib; };
+  
     #################### ? -------------------------------------------------------------------> This is a function that generates an attribute by calling a function you
     # pass to it, with each system as an argument
     forAllSystems = nixpkgs.lib.genAttrs systems;
@@ -110,7 +112,7 @@
     nixosConfigurations = {
       # FIXME replace with your hostname
       magnus = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs;};
+        specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
         modules = [
           # Enable VSCode
           vscode-server.nixosModules.default          

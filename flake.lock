@@ -74,6 +74,24 @@
         "type": "github"
       }
     },
+    "nix-secrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1714854088,
+        "narHash": "sha256-n40LQmAbe/0VPwMJoPxTaEzVjP1qpeejf68Vg/is4aE=",
+        "ref": "main",
+        "rev": "c87c191b4782230a8cc8746fd91f47caf751c87d",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@gitlab.com/fabricesemti/nix-secrets.git"
+      },
+      "original": {
+        "ref": "main",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@gitlab.com/fabricesemti/nix-secrets.git"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1714782413,
@@ -141,6 +159,7 @@
         "disko": "disko",
         "hardware": "hardware",
         "home-manager": "home-manager",
+        "nix-secrets": "nix-secrets",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "sops-nix": "sops-nix",
