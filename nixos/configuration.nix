@@ -68,8 +68,6 @@
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
   };
 
-  # FIXME: Add the rest of your current configuration
-
   # https://nixos-and-flakes.thiscute.world/best-practices/remote-deployment#remote-deployment
   security.sudo.wheelNeedsPassword = false;
 
@@ -110,7 +108,6 @@
   # Enable VSCode Server
   services.vscode-server.enable = true;
 
-  # TODO: Set your hostname
   networking.hostName = "magnus";
 
   # Allow unfree packages systemwide
@@ -125,7 +122,6 @@
 
   # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
   users.users = {
-    # FIXME: Replace with your username
     fs = {
       # TODO: You can set an initial password for your user.
       # If you do, you can skip setting a root password by passing '--no-root-passwd' to nixos-install.
@@ -134,10 +130,8 @@
       isNormalUser = true;
       description = "Fabrice Semti";
       openssh.authorizedKeys.keys = [
-        # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
 	      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIToeo6ZJO0VXyAKlFuoq7e3GFfa9xmb7UhaI6LGHc2t"
       ];
-      # TODO: Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
       extraGroups = ["wheel"];
     };
     root = {

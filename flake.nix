@@ -42,8 +42,6 @@
     };
 
     #################### ? -------------------------------------------------------------------> Personal Repositories 
-
-    #TODO: add this back latter
     # Private secrets repo.  See ./docs/secretsmgmt.md
     # Authenticate via ssh and use shallow clone
     nix-secrets = {
@@ -122,7 +120,6 @@
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
-      # FIXME replace with your hostname
       magnus = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
         modules = [
@@ -137,7 +134,6 @@
     # Standalone home-manager configuration entrypoint
     # Available through 'home-manager --flake .#your-username@your-hostname'
     homeConfigurations = {
-      # FIXME replace with your username@hostname
       "fs@magnus" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         extraSpecialArgs = {inherit inputs outputs;};
