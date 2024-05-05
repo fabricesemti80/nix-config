@@ -35,6 +35,13 @@
     # (configLib.relativeToRoot "hosts/common/optional/msmtp.nix") # required for emailing clamav alerts
     (configLib.relativeToRoot "hosts/common/optional/services/openssh.nix")
 
+    # Desktop
+    (configLib.relativeToRoot "hosts/common/optional/services/greetd.nix") # display manager
+  #   (configLib.relativeToRoot "hosts/common/optional/hyprland.nix") # window manager
+
+  #   #################### Users to Create ####################
+  #  (configLib.relativeToRoot "hosts/common/users/fs")
+
   ];
 
   nixpkgs = {
@@ -85,8 +92,13 @@
   # security.sudo.wheelNeedsPassword = false;
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+      timeout = 3;
+    };
+  };
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -115,13 +127,24 @@
     xkbVariant = "";
   };
 
-  # Enable automatic login for the user.
+  # set custom autologin options. see greetd.nix for details
+  # TODO is there a better spot for this?
+  autoLogin.enable = true;
+  autoLogin.username = "fs";
   services.getty.autologinUser = "fs";
+
+  services.gnome.gnome-keyring.enable = true;
+  # TODO enable and move to greetd area? may need authentication dir or something?
+  # services.pam.services.greetd.enableGnomeKeyring = true;
 
   # Enable VSCode Server
   services.vscode-server.enable = true;
 
-  networking.hostName = "magnus";
+  networking = {
+    hostName = "magnus";
+    # networkmanager.enable = true;
+    enableIPv6 = false;
+  };
 
   # # Allow unfree packages systemwide
   # nixpkgs.config.allowUnfree = true;
@@ -178,6 +201,14 @@
       PasswordAuthentication = false;
     };
   };
+
+  # VirtualBox settings for Hyprland to display correctly
+  # environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
+  # environment.sessionVariables.WLR_RENDERER_ALLOW_SOFTWARE = "1";
+
+  # Fix to enable VSCode to successfully remote SSH on a client to a NixOS host
+  # https://nixos.wiki/wiki/Visual_Studio_Code # Remote_SSH
+  programs.nix-ld.enable = true;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.11";
