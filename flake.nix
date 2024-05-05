@@ -77,6 +77,8 @@
     configVars = import ./vars { inherit inputs lib; };
     configLib = import ./lib { inherit lib; };
   
+    specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
+    
     #################### ? -------------------------------------------------------------------> This is a function that generates an attribute by calling a function you
     # pass to it, with each system as an argument
     forAllSystems = nixpkgs.lib.genAttrs systems;
@@ -131,8 +133,13 @@
 
     nixosConfigurations = {
       magnus = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
+        inherit specialArgs;
+        # specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
         modules = [
+          # Home Manager
+          home-manager.nixosModules.home-manager{
+            home-manager.extraSpecialArgs = specialArgs;
+          }          
           # Enable VSCode
           vscode-server.nixosModules.default          
           # > Our main nixos configuration file <
@@ -141,17 +148,17 @@
       };
     };
 
-    # Standalone home-manager configuration entrypoint
-    # Available through 'home-manager --flake .#your-username@your-hostname'
-    homeConfigurations = {
-      "fs@magnus" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs outputs;};
-        modules = [
-          # > Our main home-manager configuration file <
-          ./home-manager/home.nix
-        ];
-      };
-    };
+    # # Standalone home-manager configuration entrypoint
+    # # Available through 'home-manager --flake .#your-username@your-hostname'
+    # homeConfigurations = {
+    #   "fs@magnus" = home-manager.lib.homeManagerConfiguration {
+    #     pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+    #     extraSpecialArgs = {inherit inputs outputs;};
+    #     modules = [
+    #       # > Our main home-manager configuration file <
+    #       ./home-manager/home.nix
+    #     ];
+    #   };
+    # };
   };
 }

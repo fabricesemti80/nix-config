@@ -34,8 +34,8 @@ rebuild-full:
 rebuild-trace:
 	just rebuild-pre
 	scripts/system-flake-rebuild-trace.sh
-	just rebuild-extensions-lite
-	just rebuild-post
+	# just rebuild-extensions-lite #TODO: investigate and re-enable -->
+	# just rebuild-post #TODO: investigate and re-enable -->
 
 update:
 	nix flake update

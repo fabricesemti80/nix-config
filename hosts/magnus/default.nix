@@ -5,6 +5,7 @@
   outputs,
   lib,
   config,
+  configLib,
   pkgs,
   ...
 }: {
@@ -19,9 +20,21 @@
 
     # You can also split up your configuration and import pieces of it here:
     # ./users.nix
+    #################### Hardware Modules ####################
+    inputs.hardware.nixosModules.common-cpu-amd
+    inputs.hardware.nixosModules.common-gpu-amd
+    inputs.hardware.nixosModules.common-pc-ssd
 
-    # Import your generated (nixos-generate-config) hardware configuration
+    #################### Required Configs ####################
     ./hardware-configuration.nix
+    # (configLib.relativeToRoot "hosts/common/core")
+
+    #################### Host-specific Optional Configs ####################
+    # (configLib.relativeToRoot "hosts/common/optional/yubikey")
+    # (configLib.relativeToRoot "hosts/common/optional/services/clamav.nix") # depends on optional/msmtp.nix
+    # (configLib.relativeToRoot "hosts/common/optional/msmtp.nix") # required for emailing clamav alerts
+    # (configLib.relativeToRoot "hosts/common/optional/services/openssh.nix")
+
   ];
 
   nixpkgs = {
