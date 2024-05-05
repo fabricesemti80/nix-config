@@ -1,0 +1,53 @@
+---
+#TODO: investigate Just as a pottential alternative
+# https://taskfile.dev
+
+version: "3"
+
+vars: {}
+
+tasks:
+
+############## & if not built system yet,m run: 'nix-shell -p go-task' to load Go Tasks!
+
+  default:
+    cmds:
+      - task --list-all
+    silent: true
+
+  nix-flake:
+    desc: Apply configuration using $(hostname) and 'fs' username
+    cmds:
+      - git add .
+      - task: nix-host-current
+      - git add .
+
+
+  nix-flake-update:
+    desc: Update flake system
+    cmds:
+      - nix flake update
+
+  nix-host-current:
+    desc: Apply configuration --> host / ${HOSTNAME} 
+    cmds:
+      - sudo nixos-rebuild switch --flake .#magnus   
+
+  nix-gc:
+    desc: Clean previous Nix generations and display results
+    cmds:
+      - nix-collect-garbage --delete-old
+      - duf
+
+  nix-flake-meta:
+    desc: Check flake metadata
+    cmds:
+      - nix flake metadata
+
+  nix-flake-full:
+    desc: Update, apply all configuration and collect garbage
+    cmds:
+      - task: nix-flake-update
+      - task: nix-flake
+      - task: nix-gc
+

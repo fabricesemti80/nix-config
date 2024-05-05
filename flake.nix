@@ -43,12 +43,13 @@
 
     #################### ? -------------------------------------------------------------------> Personal Repositories 
 
-    # Private secrets repo.  See ./docs/secretsmgmt.md
-    # Authenticate via ssh and use shallow clone
-    nix-secrets = {
-      url = "git+ssh://git@gitlab.com/fabricesemti/nix-secrets.git?ref=main&shallow=1";
-      flake = false;
-    };
+    #TODO: add this back latter
+    # # Private secrets repo.  See ./docs/secretsmgmt.md
+    # # Authenticate via ssh and use shallow clone
+    # nix-secrets = {
+    #   url = "git+ssh://git@gitlab.com/fabricesemti/nix-secrets.git?ref=main&shallow=1";
+    #   flake = false;
+    # };
 
   };
 
@@ -71,22 +72,14 @@
       "aarch64-darwin"
       "x86_64-darwin"
     ];
+    inherit (nixpkgs) lib;
+
+    #################### ? -------------------------------------------------------------------> Load variables from the './vars' folder
+    configVars = import ./vars { inherit inputs lib; };
     
     #################### ? -------------------------------------------------------------------> This is a function that generates an attribute by calling a function you
     # pass to it, with each system as an argument
     forAllSystems = nixpkgs.lib.genAttrs systems;
-
-    #################### ? -------------------------------------------------------------------> flake-wide variables
-    vars = { # Variables Used In Flake
-        user = "fabrice";
-        fullName = "Fabrice Semti";
-        fullEmail = "emilfabrice@gmail.com";
-        # location = "$HOME/.setup"; #TODO: Change when final
-        pubKey =
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBJpVWYmXPpqVmlHdixDR//vdfD+sryvYmpH2Dj1/Otx";
-        terminal = "kitty";
-        editor = "nvim";
-      };
 
   in {
     # Your custom packages
