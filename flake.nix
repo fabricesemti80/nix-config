@@ -57,7 +57,9 @@
     home-manager,
     vscode-server,
     ...
-  } @ inputs: let
+  } @ inputs: 
+  
+  let
     inherit (self) outputs;
     # Supported systems for your flake packages, shell, etc.
     systems = [
@@ -87,6 +89,14 @@
     # These are usually stuff you would upstream into home-manager
     homeManagerModules = import ./modules/home-manager;
 
+    # TODO change this to something that has better looking output rules
+    # Nix formatter available through 'nix fmt' https://nix-community.github.io/nixpkgs-fmt
+    formatter = forAllSystems
+      (system:
+        nixpkgs.legacyPackages.${system}.nixpkgs-fmt
+      );
+
+      
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
