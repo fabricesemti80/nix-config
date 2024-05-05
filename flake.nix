@@ -9,7 +9,7 @@
       url = "github:nixos/nixpkgs/nixos-23.11";
     };
 
-    nixpkgs-unstable.\ = {
+    nixpkgs-unstable = {
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
     hardware = {
