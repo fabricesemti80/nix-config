@@ -126,6 +126,7 @@
     pkgs.nix
     pkgs.nixpkgs-fmt
     pkgs.pre-commit
+    pkgs.ripgrep
     pkgs.ssh-to-age
     pkgs.sops    
   ];

@@ -29,6 +29,7 @@
       libiconv
       nix
       pre-commit
+      ripgrep
       ssh-to-age
       sops
 
