@@ -15,7 +15,6 @@
       package = pkgs.elementary-xfce-icon-theme;
     };
 
-    #TODO add ascendancy cursor pack
     #cursortTheme.name = "";
     #cursortTheme.package = ;
 
