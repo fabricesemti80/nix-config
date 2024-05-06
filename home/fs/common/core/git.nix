@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, configVars, ... }:
 
 let
   gitAliases = {
@@ -33,9 +33,10 @@ in
   programs.git = {
     enable = true;
     package = pkgs.gitAndTools.gitFull;
-    userName = "emergentmind";
-    userEmail = "2889621-emergentmind@users.noreply.gitlab.com";
+    userName = "${configVars.gitHandle}";
+    userEmail = "${configVars.gitEmail}";
     aliases = gitAliases;
+
     extraConfig = {
       init.defaultBranch = "main";
       url = {
@@ -45,14 +46,22 @@ in
         "ssh://git@gitlab.com" = {
           insteadOf = "https://gitlab.com";
         };
+        autocrlf = "input";
       };
 
-      user.signing.key = "41B7B2ECE0FAEF890343124CE8AA1A8F75B56D39";
-      commit.gpgSign = false;
-      gpg.program = "${config.programs.gpg.package}/bin/gpg2";
+      user.signingkey = "~/.ssh/id_fs_git.pub";
+      commit.gpgsign = true;
+      gpg.format = "ssh";
+
+      # user.signing.key = "41B7B2ECE0FAEF890343124CE8AA1A8F75B56D39";
+      # commit.gpgSign = false;
+      # gpg.program = "${config.programs.gpg.package}/bin/gpg2"
+
     };
     # enable git Large File Storage: https://git-lfs.com/
     # lfs.enable = true;
     ignores = [ ".direnv" "result" ];
+    lfs = { enable = true; };
+
   };
 }
