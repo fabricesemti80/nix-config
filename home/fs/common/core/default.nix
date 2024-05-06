@@ -47,10 +47,10 @@
 
       # NOTE: spaces before comment are removed by nixpkgs-fmt
       # See: https://github.com/nix-community/nixpkgs-fmt/issues/305
-      atuin # A personal wiki for everyone
+      atuin# A personal wiki for everyone
       borgbackup# backups
       btop# resource monitor
-      cheat # A tool for creating and viewing interactive cheatsheets on the command-line.
+      cheat# A tool for creating and viewing interactive cheatsheets on the command-line.
       coreutils# basic gnu utils
       # curl
       eza# ls replacement
@@ -58,9 +58,9 @@
       findutils# find
       fzf# fuzzy search
       jq# JSON pretty printer and manipulator
-      lazygit # A simple terminal UI for git commands
+      lazygit# A simple terminal UI for git commands
       nix-tree# nix package tree viewer
-      neofetch # a command-line system information tool that displays information about your operating system
+      neofetch# a command-line system information tool that displays information about your operating system
       ncdu# TUI disk usage
       pciutils
       pfetch# system info
