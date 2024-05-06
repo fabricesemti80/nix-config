@@ -6,11 +6,15 @@ SOPS_FILE := "../nix-secrets/secrets.yaml"
 default:
   @just --list
 
+#################### FLAKE tasks ####################
+
+# ? part of rebuild
 rebuild-pre:
 	nix flake lock --update-input nixvim-flake
 	just update-nix-secrets
 	git add *.nix
 
+# ? part of rebuild
 rebuild-post:
 	just check-sops
 
@@ -43,17 +47,8 @@ rebuild-update:
 diff:
 	git diff ':!flake.lock'
 
-#################### Home Manager ####################
-home:
-	just rebuild-pre
-	home-manager --impure --flake . switch
-	just rebuild-post
-
-home-update:
-	just update
-	just home
-
 #################### Secrets Management ####################
+
 sops:
 	echo "Editing {{SOPS_FILE}}"
 	nix-shell -p sops --run "SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops {{SOPS_FILE}}"
