@@ -16,8 +16,6 @@
     ./zoxide.nix # cd replacement
     ./zsh # primary shell: includes zsh, oh-my-zsh, and p10k theme
 
-    # TODO: Not set, need to investigate but will need custom config if used:
-    # ./shellcolor.nix
   ] ++ (builtins.attrValues outputs.homeManagerModules);
 
   services.ssh-agent.enable = true;
