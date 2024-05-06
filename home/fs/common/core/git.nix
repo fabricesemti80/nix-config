@@ -57,10 +57,17 @@ in
       # commit.gpgSign = false;
       # gpg.program = "${config.programs.gpg.package}/bin/gpg2"
 
+      pull.rebase = true;
+      rebase.autoStash = true;
+
     };
     # enable git Large File Storage: https://git-lfs.com/
     # lfs.enable = true;
-    ignores = [ ".direnv" "result" ];
+    ignores = [
+      ".direnv"
+      "result"
+      ".vscode/**"
+    ];
     lfs = { enable = true; };
 
   };
