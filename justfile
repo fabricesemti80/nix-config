@@ -6,10 +6,6 @@ SOPS_FILE := "../nix-secrets/secrets.yaml"
 default:
   @just --list
 
-build:
-	git add *.nix
-	scripts/build.sh
-
 rebuild-pre:
 	nix flake lock --update-input nixvim-flake
 	just update-nix-secrets
