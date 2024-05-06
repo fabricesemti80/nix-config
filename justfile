@@ -60,7 +60,7 @@ home-update:
 #################### Secrets Management ####################
 sops:
 	echo "Editing {{SOPS_FILE}}"
-	nix-shell -p sops --run "SOPS_AGE_KEY_FILE=~/.age-key.txt sops {{SOPS_FILE}}"
+	nix-shell -p sops --run "SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops {{SOPS_FILE}}"
 
 age-key:
 	nix-shell -p age --run "age-keygen"
