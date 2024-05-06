@@ -14,7 +14,7 @@
     ./screen.nix # hopefully rarely needed but good to have if so
     ./ssh.nix # personal ssh configs
     ./zoxide.nix # cd replacement
-    ./zsh # primary shell: includes zsh, oh-my-zsh, and p10k theme 
+    ./zsh # primary shell: includes zsh, oh-my-zsh, and p10k theme
 
     # TODO: Not set, need to investigate but will need custom config if used:
     # ./shellcolor.nix
@@ -45,12 +45,12 @@
 
       # Packages that don't have custom configs go here
 
-      # TODO: spaces before comment are removed by nixpkgs-fmt
+      # NOTE: spaces before comment are removed by nixpkgs-fmt
       # See: https://github.com/nix-community/nixpkgs-fmt/issues/305
       atuin # A personal wiki for everyone
       borgbackup# backups
       btop# resource monitor
-      cheat # A tool for creating and viewing interactive cheatsheets on the command-line. 
+      cheat # A tool for creating and viewing interactive cheatsheets on the command-line.
       coreutils# basic gnu utils
       # curl
       eza# ls replacement

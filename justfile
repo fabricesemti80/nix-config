@@ -47,6 +47,9 @@ rebuild-update:
 diff:
 	git diff ':!flake.lock'
 
+gc:
+	nix-collect-garbage --delete-old
+
 #################### Secrets Management ####################
 
 sops:
