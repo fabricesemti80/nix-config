@@ -9,7 +9,7 @@
 
     clipboard.register = "unnamedplus"; # use system clipboard instead of internal registers
 
-    # TODO: nixvim: gruvbox-material
+    # NOTE: nixvim: gruvbox-material
     colorschemes = {
       gruvbox = {
         enable = true;
@@ -106,7 +106,7 @@
       fileTypes = [ "*" ];
     };
 
-    # TODO: nixvim: additional commands for alpha
+    # NOTE: nixvim: additional commands for alpha
     # Greeter
     plugins.alpha = {
       enable = true;
@@ -176,13 +176,13 @@
         }
       ];
     };
-    # TODO: nixvim switch to lightline and lightline-bufferline
+    # NOTE: nixvim switch to lightline and lightline-bufferline
     plugins.airline = {
       enable = true;
       powerline = true;
       extensions = {
-        # TODO: nixvim: Figure out tabline extension stuff in nixvim
-        # TODO: nixvim: Possibly use bufferline or lightline-bufferline instead
+        # NOTE: nixvim: Figure out tabline extension stuff in nixvim
+        # NOTE: nixvim: Possibly use bufferline or lightline-bufferline instead
         # """" Tabline settings
         #
         # " show buffer numbers in the tab line for easier deleting
@@ -220,7 +220,7 @@
     };
 
     # ========= Undo history ========
-    # TODO: nixvim: set up    alos, map to <leader>u
+    # NOTE: nixvim: set up    alos, map to <leader>u
     # plugins.undotree = {};
 
 
@@ -234,7 +234,7 @@
     };
 
     # ========= File Nav ===========
-    # TODO: nixvim set this one up
+    # NOTE: nixvim set this one up
     # plugins.harpoon = {};
 
     #
@@ -248,7 +248,7 @@
       inherit (pkgs.vimPlugins)
         # linting and fixing (config in extraConfigVim)
         # https://github.com/dense-analysis/ale
-        # TODO: nixvim: revamp setup to lua
+        # NOTE: nixvim: revamp setup to lua
         # there is also a lightline-ale  plugin/extension for lightline when you get around to it
         # by default ALE completion is disabled. need to determine if it's worth enabling and ditching youcompleteme ... it likely is for simplicity!
         ale
@@ -261,7 +261,7 @@
         vimwiki# Vim Wiki
         YouCompleteMe# Code completion engine
 
-        # TODO: nixvim: make sure this is working and not conflicting with YCM
+        # NOTE: nixvim: make sure this is working and not conflicting with YCM
         # supertab # Use <tab> for insert completion needs - https://github.com/ervandew/supertab/
 
         # Keep vim-devicons as last entry
@@ -287,7 +287,7 @@
     #    "l" Insert, command-line and lang-arg mode
     #    "c" Command-line mode
     keymaps = [
-      # TODO: nixvim: Test sudo save
+      # NOTE: nixvim: Test sudo save
       # {
       #   # sudo save
       #   mode= ["c"];
@@ -442,7 +442,7 @@
       " fill spaces in page names with _ in pathing
       let wiki_0.links_space_char = '_'
 
-      " TODO: nixvim: CONFIRM THESE PATHS FOR NIXOS
+      " NOTE: nixvim: CONFIRM THESE PATHS FOR NIXOS
       let wiki_1 = {}
       let wiki_1.path = '~/doc/foundry/thefoundry.wiki/'
       let wiki_1.index = 'home'
