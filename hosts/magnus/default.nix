@@ -1,13 +1,12 @@
 # This is your system's configuration file.
 # Use this to configure your system environment (it replaces /etc/nixos/configuration.nix)
-{
-  inputs,
-  outputs,
-  lib,
-  config,
-  configLib,
-  pkgs,
-  ...
+{ inputs
+, outputs
+, lib
+, config
+, configLib
+, pkgs
+, ...
 }: {
   # You can import other NixOS modules here
   imports = [
@@ -34,13 +33,14 @@
     # (configLib.relativeToRoot "hosts/common/optional/services/clamav.nix") # depends on optional/msmtp.nix
     # (configLib.relativeToRoot "hosts/common/optional/msmtp.nix") # required for emailing clamav alerts
     (configLib.relativeToRoot "hosts/common/optional/services/openssh.nix")
+    (configLib.relativeToRoot "hosts/common/optional/packages")
 
     # # Desktop
     # (configLib.relativeToRoot "hosts/common/optional/services/greetd.nix") # display manager #FIXME: used for Hyper - no use on VM
     # (configLib.relativeToRoot "hosts/common/optional/hyprland.nix") # window manager #FIXME: used for Hyper - no use on VM
 
-  #   #################### Users to Create ####################
-   (configLib.relativeToRoot "hosts/common/users/fs")
+    #   #################### Users to Create ####################
+    (configLib.relativeToRoot "hosts/common/users/fs")
 
   ];
 
@@ -146,26 +146,9 @@
     enableIPv6 = false;
   };
 
-  # # Allow unfree packages systemwide
-  # nixpkgs.config.allowUnfree = true;
+  # Docker needs this - https://nixos.wiki/wiki/Docker
+  virtualisation.docker.enable = true;
 
-  # System-wide packages
-  environment.systemPackages = [
-    pkgs.age
-    pkgs.direnv
-    pkgs.duf
-    pkgs.git
-    pkgs.go-task
-    pkgs.home-manager
-    pkgs.just
-    pkgs.libiconv
-    pkgs.nix
-    pkgs.nixpkgs-fmt
-    pkgs.pre-commit
-    pkgs.ripgrep
-    pkgs.ssh-to-age
-    pkgs.sops
-  ];
 
   # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
   users.users = {
@@ -177,14 +160,14 @@
       isNormalUser = true;
       description = "Fabrice Semti";
       openssh.authorizedKeys.keys = [
-	      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIToeo6ZJO0VXyAKlFuoq7e3GFfa9xmb7UhaI6LGHc2t"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIToeo6ZJO0VXyAKlFuoq7e3GFfa9xmb7UhaI6LGHc2t"
       ];
-      extraGroups = ["wheel"];
+      extraGroups = [ "wheel" ];
     };
     root = {
-         openssh.authorizedKeys.keys = [
+      openssh.authorizedKeys.keys = [
         # Allow connect with your ssh key as the `root` account - https://nixos-and-flakes.thiscute.world/best-practices/remote-deployment#remote-deployment
-	      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIToeo6ZJO0VXyAKlFuoq7e3GFfa9xmb7UhaI6LGHc2t"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIToeo6ZJO0VXyAKlFuoq7e3GFfa9xmb7UhaI6LGHc2t"
       ];
     };
   };
