@@ -35,9 +35,9 @@
     # (configLib.relativeToRoot "hosts/common/optional/msmtp.nix") # required for emailing clamav alerts
     (configLib.relativeToRoot "hosts/common/optional/services/openssh.nix")
 
-    # Desktop
-    (configLib.relativeToRoot "hosts/common/optional/services/greetd.nix") # display manager
-    (configLib.relativeToRoot "hosts/common/optional/hyprland.nix") # window manager
+    # # Desktop
+    # (configLib.relativeToRoot "hosts/common/optional/services/greetd.nix") # display manager #FIXME: used for Hyper - no use on VM
+    # (configLib.relativeToRoot "hosts/common/optional/hyprland.nix") # window manager #FIXME: used for Hyper - no use on VM
 
   #   #################### Users to Create ####################
    (configLib.relativeToRoot "hosts/common/users/fs")
@@ -127,10 +127,10 @@
     xkbVariant = "";
   };
 
-  # set custom autologin options. see greetd.nix for details
-  # TODO is there a better spot for this?
-  autoLogin.enable = true;
-  autoLogin.username = "fs";
+  # # set custom autologin options. see greetd.nix for details
+  # # TODO is there a better spot for this?
+  # autoLogin.enable = true; #FIXME: used for Hyper - no use on VM
+  # autoLogin.username = "fs"; #FIXME: used for Hyper - no use on VM
   services.getty.autologinUser = "fs";
 
   services.gnome.gnome-keyring.enable = true;
@@ -203,8 +203,8 @@
   };
 
   # VirtualBox settings for Hyprland to display correctly
-  # environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
-  # environment.sessionVariables.WLR_RENDERER_ALLOW_SOFTWARE = "1";
+  environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
+  environment.sessionVariables.WLR_RENDERER_ALLOW_SOFTWARE = "1";
 
   # Fix to enable VSCode to successfully remote SSH on a client to a NixOS host
   # https://nixos.wiki/wiki/Visual_Studio_Code # Remote_SSH
