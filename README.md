@@ -1,4 +1,10 @@
-# My personal Nix development
+<div align="center">
+<h1>
+<img width="100" src="docs/nixos-ascendancy.png" /> <br>
+</h1>
+</div>
+
+# My personal Nix development config
 
 This flake is mostly based on  [misterio's Nix starter](https://github.com/Misterio77/nix-starter-configs) but it also heavily relies on [EmergentMind's Nix config](https://github.com/EmergentMind/nix-config).
 

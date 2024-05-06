@@ -30,6 +30,9 @@ let
 in
 {
 
+  home.file.".ssh/allowed_signers".text =
+    "* ${builtins.readFile /home/fs/.ssh/id_fs_git.pub}";
+
   programs.git = {
     enable = true;
     package = pkgs.gitAndTools.gitFull;
@@ -52,6 +55,7 @@ in
       user.signingkey = "~/.ssh/id_fs_git.pub";
       commit.gpgsign = true;
       gpg.format = "ssh";
+      gpg.ssh.allowedSignersFile = "~/.ssh/allowed_signers";
 
       # user.signing.key = "41B7B2ECE0FAEF890343124CE8AA1A8F75B56D39";
       # commit.gpgSign = false;
