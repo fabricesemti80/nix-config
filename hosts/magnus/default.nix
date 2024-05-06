@@ -37,7 +37,7 @@
 
     # Desktop
     (configLib.relativeToRoot "hosts/common/optional/services/greetd.nix") # display manager
-  #   (configLib.relativeToRoot "hosts/common/optional/hyprland.nix") # window manager
+    (configLib.relativeToRoot "hosts/common/optional/hyprland.nix") # window manager
 
   #   #################### Users to Create ####################
    (configLib.relativeToRoot "hosts/common/users/fs")
