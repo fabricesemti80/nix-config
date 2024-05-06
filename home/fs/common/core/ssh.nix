@@ -20,6 +20,28 @@
           "~/.ssh/id_fs_git"
         ];
       };
+      "pve" = {
+        host = "10.0.40.10 10.0.40.11 10.0.40.12";
+        user = "root";
+        forwardAgent = true;
+        identitiesOnly = true;
+        identityFile = [
+          # "~/.ssh/id_yubikey" # This is an auto symlink to whatever yubikey is plugged in. See hosts/common/optional/yubikey #TODO: sort out yubikey frist
+          # "~/.ssh/id_manu" # fallback to id_manu if yubis aren't present
+          "~/.ssh/id_ed25519"
+        ];
+      };
+      "devops0" = {
+        host = "10.0.40.100";
+        user = "root";
+        forwardAgent = true;
+        identitiesOnly = true;
+        identityFile = [
+          # "~/.ssh/id_yubikey" # This is an auto symlink to whatever yubikey is plugged in. See hosts/common/optional/yubikey #TODO: sort out yubikey frist
+          # "~/.ssh/id_manu" # fallback to id_manu if yubis aren't present
+          "~/.ssh/id_debian12"
+        ];
+      };
     };
     # FIXME: This should probably be for git systems only?
     #controlMaster = "auto";

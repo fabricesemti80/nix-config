@@ -23,12 +23,12 @@ in
       "private_keys/github" = {
         path = "${homeDirectory}/.ssh/id_fs_git";
       };
-      # "private_keys/mara" = {
-      #   path = "${homeDirectory}/.ssh/id_mara";
-      # };
-      # "private_keys/manu" = {
-      #   path = "${homeDirectory}/.ssh/id_manu";
-      # };
+      "private_keys/debian12" = {
+        path = "${homeDirectory}/.ssh/id_debian12";
+      };
+      "private_keys/fs" = {
+        path = "${homeDirectory}/.ssh/id_ed25519";
+      };
       # "private_keys/mila" = {
       #   path = "${homeDirectory}/.ssh/id_mila";
       # };

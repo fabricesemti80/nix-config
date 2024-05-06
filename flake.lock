@@ -174,10 +174,10 @@
     "nix-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1714995945,
-        "narHash": "sha256-T1naEJ2qZVOdwcbDas13BvW0wg5nsNNF0l31pJw4MvA=",
+        "lastModified": 1715009461,
+        "narHash": "sha256-sXjqO914aw3HcHqtFxyuTShx/JsRE8j3uPoMeeKlnig=",
         "ref": "main",
-        "rev": "10962ec015167352130886ce83a70be73dc948ef",
+        "rev": "ce5cb360c1aab363ec73f67065f9890f54fba3c4",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@gitlab.com/fabricesemti/nix-secrets.git"
