@@ -1,22 +1,20 @@
-{ ... }: {
-  # i18n.defaultLocale = lib.mkDefault "en_US.UTF-8";
-  # time.timeZone = lib.mkDefault "America/Edmonton";
+{ configVars, ... }: {
 
   # Set your time zone.
-  time.timeZone = "Europe/London";
+  time.timeZone = configVars.timeZone;
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_GB.UTF-8";
+  i18n.defaultLocale = configVars.encoding;
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_GB.UTF-8";
-    LC_IDENTIFICATION = "en_GB.UTF-8";
-    LC_MEASUREMENT = "en_GB.UTF-8";
-    LC_MONETARY = "en_GB.UTF-8";
-    LC_NAME = "en_GB.UTF-8";
-    LC_NUMERIC = "en_GB.UTF-8";
-    LC_PAPER = "en_GB.UTF-8";
-    LC_TELEPHONE = "en_GB.UTF-8";
-    LC_TIME = "en_GB.UTF-8";
+    LC_ADDRESS = configVars.encoding;
+    LC_IDENTIFICATION = configVars.encoding;
+    LC_MEASUREMENT = configVars.encoding;
+    LC_MONETARY = configVars.encoding;
+    LC_NAME = configVars.encoding;
+    LC_NUMERIC = configVars.encoding;
+    LC_PAPER = configVars.encoding;
+    LC_TELEPHONE = configVars.encoding;
+    LC_TIME = configVars.encoding;
   };
 }
