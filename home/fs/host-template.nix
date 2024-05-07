@@ -1,7 +1,4 @@
-{ lib, configVars, ... }:
-let
-
-in
+{ configVars, ... }:
 {
   imports = [
     #################### Hardware Modules ####################

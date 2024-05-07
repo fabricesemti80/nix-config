@@ -1,9 +1,4 @@
-{ inputs
-, outputs
-, lib
-, config
-, configLib
-, pkgs
+{ pkgs
 , ...
 }: {
   # System packages

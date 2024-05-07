@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ lib, ... }:
 let
   #FIXME: switch this to 10022 at some point. leaving it as 22 for now becuase I don't have time
   # to add all the required matchblock entries
