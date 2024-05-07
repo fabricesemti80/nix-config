@@ -1,3 +1,7 @@
+/* ---------------------------------------------------------------------------------------------- */
+/*                                       ZSH STARTING POINT                                       */
+/* ---------------------------------------------------------------------------------------------- */
+
 #
 # This is a basic enablement of zsh at the host level as a safe guard
 # in case enabling zsh as a home-manager module (see /home/ta/core/cli)

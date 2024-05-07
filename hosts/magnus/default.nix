@@ -130,6 +130,8 @@
     layout = "us";
     xkbVariant = "";
   };
+  console.keyMap = "us";
+
 
   # # set custom autologin options. see greetd.nix for details
   # # TODO is there a better spot for this?

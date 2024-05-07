@@ -1,4 +1,9 @@
 { config, inputs, pkgs, lib, ... }:
+
+/* ---------------------------------------------------------------------------------------------- */
+/*                                   NIXOS UPGRADE CONFIGURATION                                  */
+/* ---------------------------------------------------------------------------------------------- */
+
 let
   inherit (config.networking) hostName;
   # Only enable auto upgrade if current config came from a clean tree

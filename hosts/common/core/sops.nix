@@ -5,11 +5,19 @@ let
   secretsDirectory = builtins.toString inputs.nix-secrets;
 in
 {
+
+  /* ---------------------------------------------------------------------------------------------- */
+  /*                                        SECRET MANAGEMENT                                       */
+  /* ---------------------------------------------------------------------------------------------- */
+
   imports = [
     inputs.sops-nix.nixosModules.sops
   ];
 
   sops = {
+
+    /* ----------------------------------- configuration settings ----------------------------------- */
+
     defaultSopsFile = "${secretsDirectory}/secrets.yaml";
     validateSopsFiles = false;
 
@@ -22,6 +30,8 @@ in
       generateKey = true;
     };
 
+    /* --------------------------- secrets extracted from the default file -------------------------- */
+
     # secrets will be output to /run/secrets
     # e.g. /run/secrets/msmtp-password
     # secrets required for user creation are handled in respective ./users/<username>.nix files
@@ -30,17 +40,17 @@ in
       # Decrypt ta-password to /run/secrets-for-users/ so it can be used to create the user
       "${configVars.username}/password".neededForUsers = true;
 
-# #FIXME move to mstmp.nix and also have host and address being assigne to configVars as per fidgetingbits
-#       msmtp-host = { };
-#       msmtp-address = { };
-#       msmtp-password = { };
+      # #FIXME move to mstmp.nix and also have host and address being assigne to configVars as per fidgetingbits
+      #       msmtp-host = { };
+      #       msmtp-address = { };
+      #       msmtp-password = { };
 
-#       # smb-secrets are extracted in hosts/common/optional/smbclient.nix
+      #       # smb-secrets are extracted in hosts/common/optional/smbclient.nix
 
-#       # extract to default pam-u2f authfile location for passwordless sudo. see ../optional/yubikey
-#       "yubico/u2f_keys" = {
-#         path = "/home/ta/.config/Yubico/u2f_keys";
-#       };
+      #       # extract to default pam-u2f authfile location for passwordless sudo. see ../optional/yubikey
+      #       "yubico/u2f_keys" = {
+      #         path = "/home/ta/.config/Yubico/u2f_keys";
+      #       };
     };
   };
 }
