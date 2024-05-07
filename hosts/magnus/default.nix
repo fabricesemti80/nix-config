@@ -35,6 +35,9 @@
     (configLib.relativeToRoot "hosts/common/optional/services/openssh.nix")
     (configLib.relativeToRoot "hosts/common/optional/packages")
 
+    (configLib.relativeToRoot "hosts/common/optional/devtools") #NOTE: only for dev workstations
+
+
     # # Desktop
     # (configLib.relativeToRoot "hosts/common/optional/services/greetd.nix") # display manager #FIXME: used for Hyper - no use on VM
     # (configLib.relativeToRoot "hosts/common/optional/hyprland.nix") # window manager #FIXME: used for Hyper - no use on VM

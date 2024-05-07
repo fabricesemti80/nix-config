@@ -13,25 +13,8 @@
 
       #TODO: move some of these to user0only!
 
-      ### NIX tools
-      nix
-      nix-info # ? (Nix package manager information)
-      nixfmt # ? (Formatter for Nix code)
-      nixpkgs-fmt # ? (Formatter for Nixpkgs code)
+      ### User home management
       home-manager # ? Manage your home
-
-      ### Development Tools:
-      docker # ? Container management
-      git # ? (Version control system)
-      go-task # ? (Task runner / build tool)
-      # hugo # ? (Static site generator)
-      httpie # ? (Command-line HTTP client)
-      just # ? Make-alternative
-      libiconv # ? Encoding conversion
-      jq # ? (Lightweight and flexible command-line JSON processor)
-      pre-commit # ? Check code before commiting
-      ripgrep # ? (Fast and efficient text search tool)
-      # wget # ? (Command-line utility to download files from the web)
 
       ### Security
       age # ? (Simple, modern file encryption tool)
@@ -46,9 +29,6 @@
       neovim # ? (Text editor that seeks to improve upon Vim)
       tree # ? (Recursive directory listing command)
       tmux # ? (Terminal multiplexer)
-
-      ### Programming Language:
-      # go # ? (Go programming language)
 
       ### Utilities:
       direnv # ? (Environment switcher for the shell)
@@ -72,6 +52,7 @@
       curl # ? (Command-line tool for making HTTP requests)
       httpie # ? (Command-line HTTP client)
       wget # ? (Command-line utility to download files from the web)
+
     ];
   };
 }
