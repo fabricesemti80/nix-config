@@ -28,9 +28,12 @@
 
     #################### Host-specific Optional Configs ####################
     # (configLib.relativeToRoot "hosts/common/optional/yubikey")
+    (configLib.relativeToRoot "hosts/common/optional/docker.nix")
+
     # (configLib.relativeToRoot "hosts/common/optional/services/clamav.nix") # depends on optional/msmtp.nix
     # (configLib.relativeToRoot "hosts/common/optional/msmtp.nix") # required for emailing clamav alerts
     (configLib.relativeToRoot "hosts/common/optional/services/openssh.nix")
+
     (configLib.relativeToRoot "hosts/common/optional/packages")
 
     (configLib.relativeToRoot "hosts/common/optional/devtools") #NOTE: only for dev workstations
@@ -147,8 +150,7 @@
     enableIPv6 = false;
   };
 
-  # Docker needs this - https://nixos.wiki/wiki/Docker
-  virtualisation.docker.enable = true;
+
 
 
   # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.

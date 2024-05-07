@@ -14,10 +14,11 @@
       nix-info # ? (Nix package manager information)
       nixfmt # ? (Formatter for Nix code)
       nixpkgs-fmt # ? (Formatter for Nixpkgs code)
+      nvd # ?https://gitlab.com/khumba/nvd
 
       ### Development Tools:
       ansible
-      docker # ? Container management
+      # docker # ? Container management
       git # ? (Version control system)
       go-task # ? (Task runner / build tool)
       # hugo # ? (Static site generator)
