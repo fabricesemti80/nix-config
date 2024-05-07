@@ -2,12 +2,18 @@ minimum_pre_commit_version: "2.9.0"
 ci:
   autoupdate_schedule: monthly
 repos:
+  - repo: https://github.com/astro/deadnix
+    rev: v1.2.1
+    hooks:
+      - id: deadnix
+        #args: [--edit] # Uncomment to automatically modify files
+        stages: [commit]
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.1
+    rev: v1.5.5
     hooks:
       - id: forbid-crlf
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.6.0
     hooks:
       - id: check-added-large-files
       - id: check-case-conflict
@@ -28,6 +34,6 @@ repos:
 #    hooks:
 #      - id: nixpkgs-fmt
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.7.0-1
+    rev: v3.8.0-1
     hooks:
       - id: shfmt
