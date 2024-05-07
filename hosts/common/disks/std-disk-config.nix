@@ -1,4 +1,5 @@
 {
+  #FIXME: I do not think this is in use - to investigate and apply!
   disko.devices = {
     disk = {
       sda = {

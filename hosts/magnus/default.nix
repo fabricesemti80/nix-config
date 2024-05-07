@@ -1,12 +1,13 @@
-# This is your system's configuration file.
+/* ---------------------------------------------------------------------------------------------- */
+/*                           # THIS IS YOUR SYSTEM'S CONFIGURATION FILE.                          */
+/* ---------------------------------------------------------------------------------------------- */
 # Use this to configure your system environment (it replaces /etc/nixos/configuration.nix)
 { inputs
 , outputs
-, config
 , configLib
 , ...
 }: {
-  # You can import other NixOS modules here
+  /* -------------------------- # you can import other nixos modules here ------------------------- */
   imports = [
     # If you want to use modules your own flake exports (from modules/nixos):
     # outputs.nixosModules.example
@@ -15,39 +16,41 @@
     # inputs.hardware.nixosModules.common-cpu-amd
     # inputs.hardware.nixosModules.common-ssd
 
-    # You can also split up your configuration and import pieces of it here:
-    # ./users.nix
-    #################### Hardware Modules ####################
+
+    /* ------------------------------------------ hardware modules ------------------------------------------ */
     inputs.hardware.nixosModules.common-cpu-amd
     inputs.hardware.nixosModules.common-gpu-amd
     inputs.hardware.nixosModules.common-pc-ssd
 
-    #################### Required Configs ####################
+    /* ---------------------------- required configs --------------------------- */
     ./hardware-configuration.nix
+
+
+    /* ----------------------------------------- core definitions ---------------------------------------- */
     (configLib.relativeToRoot "hosts/common/core")
 
-    #################### Host-specific Optional Configs ####################
+
+    /* --------------------------------------- optional configurations --------------------------------------- */
     # (configLib.relativeToRoot "hosts/common/optional/yubikey")
     (configLib.relativeToRoot "hosts/common/optional/docker.nix")
-
-    # (configLib.relativeToRoot "hosts/common/optional/services/clamav.nix") # depends on optional/msmtp.nix
-    # (configLib.relativeToRoot "hosts/common/optional/msmtp.nix") # required for emailing clamav alerts
+    # (configLib.relativeToRoot "hosts/common/optional/services/clamav.nix") # FIXME: depends on optional/msmtp.nix
+    # (configLib.relativeToRoot "hosts/common/optional/msmtp.nix") #FIXME: required for emailing clamav alerts
     (configLib.relativeToRoot "hosts/common/optional/services/openssh.nix")
-
     (configLib.relativeToRoot "hosts/common/optional/packages")
 
-    (configLib.relativeToRoot "hosts/common/optional/devtools") #NOTE: only for dev workstations
+    /* ---------------------------------------- dev workstations only ---------------------------------------- */
+    (configLib.relativeToRoot "hosts/common/optional/devtools")
 
-
-    # # Desktop
+    /* ------------------------------------------ desktops only------------------------------------------ */
     # (configLib.relativeToRoot "hosts/common/optional/services/greetd.nix") # display manager #FIXME: used for Hyper - no use on VM
     # (configLib.relativeToRoot "hosts/common/optional/hyprland.nix") # window manager #FIXME: used for Hyper - no use on VM
 
-    #   #################### Users to Create ####################
+    /* -------------------------------------------- users ------------------------------------------- */
     (configLib.relativeToRoot "hosts/common/users/fs")
 
   ];
 
+  /* ------------------------------------------ overlays ------------------------------------------ */
   nixpkgs = {
     # You can add overlays here
     overlays = [
@@ -66,36 +69,10 @@
       #   });
       # })
     ];
-    # Configure your nixpkgs instance
-    config = {
-      # # Disable if you don't want unfree packages
-      # allowUnfree = true; #NOTE: defined in home config
-    };
+
   };
 
-  # nix = let
-  #   flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
-  # in {
-  #   settings = {
-  #     # Enable flakes and new 'nix' command
-  #     experimental-features = "nix-command flakes";
-  #     # Opinionated: disable global registry
-  #     flake-registry = "";
-  #     # Workaround for https://github.com/NixOS/nix/issues/9574
-  #     nix-path = config.nix.nixPath;
-  #   };
-  #   # Opinionated: disable channels
-  #   channel.enable = false;
-
-  #   # Opinionated: make flake registry and nix path match flake inputs
-  #   registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
-  #   nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
-  # };
-
-  # # https://nixos-and-flakes.thiscute.world/best-practices/remote-deployment#remote-deployment
-  # security.sudo.wheelNeedsPassword = false;
-
-  # Bootloader.
+  /* ----------------------------------------  bootloader ---------------------------------------- */
   boot = {
     loader = {
       systemd-boot.enable = true;
@@ -104,34 +81,23 @@
     };
   };
 
-  # Enable networking
+  /* ----------------------------------------- networking ----------------------------------------- */
   networking.networkmanager.enable = true;
+  networking = {
+    hostName = "magnus";
+    # networkmanager.enable = true;
+    enableIPv6 = false;
+  };
 
-  # # Set your time zone.
-  # time.timeZone = "Europe/London";
 
-  # # Select internationalisation properties.
-  # i18n.defaultLocale = "en_GB.UTF-8";
-
-  # i18n.extraLocaleSettings = {
-  #   LC_ADDRESS = "en_GB.UTF-8";
-  #   LC_IDENTIFICATION = "en_GB.UTF-8";
-  #   LC_MEASUREMENT = "en_GB.UTF-8";
-  #   LC_MONETARY = "en_GB.UTF-8";
-  #   LC_NAME = "en_GB.UTF-8";
-  #   LC_NUMERIC = "en_GB.UTF-8";
-  #   LC_PAPER = "en_GB.UTF-8";
-  #   LC_TELEPHONE = "en_GB.UTF-8";
-  #   LC_TIME = "en_GB.UTF-8";
-  # };
-
-  # Configure keymap in X11
+  /* ------------------------------------------ keyboards ----------------------------------------- */
   services.xserver = {
     layout = "us";
     xkbVariant = "";
   };
   console.keyMap = "us";
 
+  /* ------------------------------ login and desktop configurations ------------------------------ */
 
   # # set custom autologin options. see greetd.nix for details
   # # TODO is there a better spot for this?
@@ -143,19 +109,16 @@
   # TODO enable and move to greetd area? may need authentication dir or something?
   # services.pam.services.greetd.enableGnomeKeyring = true;
 
-  # Enable VSCode Server
+  /* ------------------------------------ enable vscode server ------------------------------------ */
   services.vscode-server.enable = true;
 
-  networking = {
-    hostName = "magnus";
-    # networkmanager.enable = true;
-    enableIPv6 = false;
-  };
 
 
 
 
-  # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
+
+  #!!!! FIXME: duplicate - check/remove (check: nix-config/hosts/common/users/fs/default.nix)
+  #!!!!
   users.users = {
     fs = {
       # TODO: You can set an initial password for your user.
