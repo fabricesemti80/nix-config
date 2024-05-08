@@ -9,11 +9,11 @@ in
   # iso where we want to limit the depth of user configuration
   # FIXME  this should just pass an isIso style thing that we can check instead
   config = lib.optionalAttrs (!(lib.hasAttr "isMinimal" configVars))
-  {
-    # Import this user's personal/home configurations
-#??     packages = [ pkgs.home-manager ];
-    home-manager.users.${configVars.username} = import (configLib.relativeToRoot "home/${configVars.username}/${config.networking.hostName}.nix");
-  } // {
+    {
+      # Import this user's personal/home configurations
+      #??     packages = [ pkgs.home-manager ];
+      home-manager.users.${configVars.username} = import (configLib.relativeToRoot "home/${configVars.username}/${config.networking.hostName}.nix");
+    } // {
     users.mutableUsers = false; # Required for password to be set via sops during system activation!
     users.users.${configVars.username} = {
       isNormalUser = true;

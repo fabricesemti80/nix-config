@@ -40,6 +40,8 @@ in
       # Decrypt ta-password to /run/secrets-for-users/ so it can be used to create the user
       "${configVars.username}/password".neededForUsers = true;
 
+      "full-name" = { };
+
       # #FIXME move to mstmp.nix and also have host and address being assigne to configVars as per fidgetingbits
       #       msmtp-host = { };
       #       msmtp-address = { };
