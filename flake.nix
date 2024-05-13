@@ -150,6 +150,7 @@
     # Building configurations available through `just rebuild` or `nixos-rebuild --flake .#hostname` #FIXME: review  and fix 'just rebuild'
 
     nixosConfigurations = {
+      /* ---------------------------------------- the first proxmox vm ---------------------------------------- */
       magnus = nixpkgs.lib.nixosSystem {
         inherit specialArgs;
         # specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
@@ -164,6 +165,21 @@
           ./hosts/magnus
         ];
       };
+      /* ---------------------------------------- the second a proxmox vm ---------------------------------------- */
+      fulgrim = nixpkgs.lib.nixosSystem {
+        inherit specialArgs;
+        # specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
+        modules = [
+          # Home Manager
+          home-manager.nixosModules.home-manager{
+            home-manager.extraSpecialArgs = specialArgs;
+          }          
+          # Enable VSCode
+          vscode-server.nixosModules.default          
+          # > Our main nixos configuration file <
+          ./hosts/fulgrim
+        ];
+      };      
     };
 
     # # Standalone home-manager configuration entrypoint
