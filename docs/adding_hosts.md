@@ -165,7 +165,7 @@ cp -r  ./hosts/magnus ./hosts/fulgrim
 
 > note: when updating, at the minimum make sure to replace the contents of `hardware-configuration.nix` with the one on the new machine; do it on the old host or on the new host after cloning the repository!!
 
-## Create a new home configuration
+### Create a new home configuration
 
 Copy an existing one and edit
 
@@ -173,3 +173,13 @@ Copy an existing one and edit
 ❯ cp home/fs/magnus.nix home/fs/fulgrim.nix
 # ... then edit the file
 ```
+
+### Update / rebuild the flake 
+
+Then push to the git repo and move on to the new host
+
+## On the new host again
+
+
+
+
