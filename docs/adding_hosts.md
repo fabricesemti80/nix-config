@@ -180,6 +180,8 @@ Then push to the git repo and move on to the new host
 
 ## On the new host again
 
+- `git pull` the changes
 
+- 
 
 
