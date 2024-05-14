@@ -49,10 +49,11 @@ sudo nixos-rebuild switch
 [fabrice@nixos:~/projects]$
 ```
 
-- create a `~/.ssh` folder and copy your ssh key for Github (or Gitlab if you use it) into your ~/.ssh folder somehow (ie. copy from another machine, USB key, etc.)
+- create a `~/.ssh` folder and copy your ssh keys for Github (or Gitlab if you use it) into your ~/.ssh folder somehow (ie. copy from another machine, USB key, etc.)
 
 ```sh
 scp ~/.ssh/id_fs_git fabrice@10.0.20.89:/home/fabrice/.ssh/.
+scp ~/.ssh/id_fs_git.pub fabrice@10.0.20.89:/home/fabrice/.ssh/.
 ...
 ```
 
@@ -182,6 +183,12 @@ Then push to the git repo and move on to the new host
 
 - `git pull` the changes
 
-- 
+- then apply your new config
+
+```sh
+[fabrice@nixos:~/projects/nix-config]$  sudo nixos-rebuild switch --flake .#fulgrim --impure
+```
+
+> note: important to note, this time use the systems name; latter on you can rebuild with "just rebuild"
 
 
