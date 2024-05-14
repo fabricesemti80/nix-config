@@ -31,7 +31,7 @@ in
 {
 
   home.file.".ssh/allowed_signers".text =
-    "* ${builtins.readFile /home/fs/.ssh/id_fs_git.pub}";
+    "* ${builtins.readFile /home/${configVars.username}/.ssh/id_fs_git.pub}";
 
   programs.git = {
     enable = true;
