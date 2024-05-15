@@ -6,6 +6,9 @@ Use desktop-based or minimal install.
 
 ## Post-install on the new machine
 
+> IMPORTANT:  work on the new system as **root***!
+> You have to have the `ssh` keys and config in `/root/.ssh`, so at the very least copy them - and the starter `config` - to this folder
+
 In order to be able to connect to the host via SSH, a few things should be done:
 
 - enable SSH
