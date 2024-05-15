@@ -8,7 +8,7 @@
     ./bat.nix # cat with better syntax highlighting and extras like batgrep.
     ./direnv.nix # shell environment manager. Hooks inot shell direnv to look for .envrc before prompts
     ./fonts.nix # core fonts
-    ./git.nix # personal git config
+    # ./git.nix # personal git config #FIXME: re-enable
     ./kitty.nix # terminal
     ./nixvim # vim goodness
     ./screen.nix # hopefully rarely needed but good to have if so

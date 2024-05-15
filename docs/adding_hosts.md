@@ -39,21 +39,21 @@ sudo nixos-rebuild switch
 - create a folder for your repositories and enter to this
 
 ```sh
-[fabrice@nixos:~]$ mkdir projects
+[fs@nixos:~]$ mkdir projects
 
-[fabrice@nixos:~]$ cd projects
+[fs@nixos:~]$ cd projects
 
-[fabrice@nixos:~/projects]$ pwd
-/home/fabrice/projects
+[fs@nixos:~/projects]$ pwd
+/home/fs/projects
 
-[fabrice@nixos:~/projects]$
+[fs@nixos:~/projects]$
 ```
 
 - create a `~/.ssh` folder and copy your ssh keys for Github (or Gitlab if you use it) into your ~/.ssh folder somehow (ie. copy from another machine, USB key, etc.)
 
 ```sh
-scp ~/.ssh/id_fs_git fabrice@10.0.20.89:/home/fabrice/.ssh/.
-scp ~/.ssh/id_fs_git.pub fabrice@10.0.20.89:/home/fabrice/.ssh/.
+scp ~/.ssh/id_fs_git fs@10.0.20.89:/home/fs/.ssh/.
+scp ~/.ssh/id_fs_git.pub fs@10.0.20.89:/home/fs/.ssh/.
 ...
 ```
 
@@ -127,9 +127,20 @@ Switched to a new branch 'dev'
 ❯ cd nix-config
 
 # this command will update keys and checks in the repo
-❯ just rekey   
-```
+❯ just rekey 
 
+just rekey
+cd ../nix-secrets && (sops updatekeys -y secrets.yaml && (pre-commit run --all-files || true) && git add -u && (git commit -m "chore: rekey" || true) && git push )
+2024/05/15 08:22:00 Syncing keys for file /home/fs/projects/nix-secrets/secrets.yaml
+The following changes will be made to the file's groups:
+Group 1
+    age1qeuwa0rql46ll9px3z25l5wyuysfg78nhj2arxvnggw2heujksgsfp7lfr
+...
++++ age1htm763qruvh2fls8nr2n97r057330wmlgw0mhart4ea43xyvf3ns7977fp
+--- age17kvd3m6v24ylkcur7wfk3zwc7ts3djm8vvpmmqemtzcp2p7dt4esu8re47
+....
+```
+> note: this updates the configuration so the new host can read the secrets
 
 ### Edit flake file 
 
@@ -186,7 +197,7 @@ Then push to the git repo and move on to the new host
 - then apply your new config
 
 ```sh
-[fabrice@nixos:~/projects/nix-config]$  sudo nixos-rebuild switch --flake .#fulgrim --impure
+[fs@nixos:~/projects/nix-config]$  sudo nixos-rebuild --show-trace --impure --flake .#fulgrim switch
 ```
 
 > note: important to note, this time use the systems name; latter on you can rebuild with "just rebuild"
