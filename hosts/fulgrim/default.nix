@@ -112,6 +112,8 @@ in
   # networking.networkmanager.enable = true;
   networking = {
     inherit hostName;
+    inherit (configVars.networking) defaultGateway nameservers;
+
     networkmanager.enable = true;
   };
 
