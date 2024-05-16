@@ -99,14 +99,20 @@ in
 
 
   /* ----------------------------------------- networking ----------------------------------------- */
+  # networking = {
+
+  #   inherit (configVars.networking) defaultGateway nameservers;
+  #   inherit (configVars.networking.hostsInterface.${hostName}) interfaces;
+
+  #   # desktop need its cli for status bar
+  #   networkmanager.enable = true;
+
+  # };
+
+  networking.networkmanager.enable = true;
   networking = {
-
-    inherit (configVars.networking) defaultGateway nameservers;
-    inherit (configVars.networking.hostsInterface.${hostName}) interfaces;
-
-    # desktop need its cli for status bar
-    networkmanager.enable = true;
-
+    inherit hostName;
+    # networkmanager.enable = true;
   };
 
 
