@@ -93,11 +93,15 @@
 
 
   /* ----------------------------------------- networking ----------------------------------------- */
-  networking.networkmanager.enable = true;
   networking = {
     hostName = "fulgrim";
-    # networkmanager.enable = true;
-    inherit (configVars.networking) nameservers;
+
+    inherit (configVars.networking) defaultGateway nameservers;
+    inherit (configVars.networking.hostsInterface.${hostName}) interfaces;
+
+    # desktop need its cli for status bar
+    networkmanager.enable = true;
+
   };
 
 
