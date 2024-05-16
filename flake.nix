@@ -112,7 +112,8 @@
     configVars = import ./vars { inherit inputs lib; };
     configLib = import ./lib { inherit lib; };
   
-    specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
+    # NOTE: do not forget to import `inputs` here!
+    specialArgs = { inherit inputs outputs configVars configLib nixpkgs nur-ryan4yin; };
     
      /* ---------- this is a function that generates an attribute by calling a function you ---------- */
     # pass to it, with each system as an argument
