@@ -3,7 +3,11 @@
 
   inputs = {
     
-    #################### ? -------------------------------------------------------------------> Official NixOS and HM Package Sources 
+    /* ---------------------------------------------------------------------------------------------- */
+    /*                                       INPUTE REPOSITORIES                                      */
+    /* ---------------------------------------------------------------------------------------------- */
+
+    /* ---------------------------- official nixos and hm package sources --------------------------- */
 
     nixpkgs = {
       url = "github:nixos/nixpkgs/nixos-23.11";
@@ -22,7 +26,7 @@
         inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    #################### ? ------------------------------------------------------------------->  Utilities 
+     /* ------------------------------------------ utilities ----------------------------------------- */
 
     # Declarative partitioning and formatting
     disko = {
@@ -59,12 +63,19 @@
     #   inputs.hyprland.follows = "hyprland";
     # };
     
-    #################### ? -------------------------------------------------------------------> Personal Repositories 
+    /* ------------------------------------ personal repositories ----------------------------------- */
     # Private secrets repo.  See ./docs/secretsmgmt.md
     # Authenticate via ssh and use shallow clone
     nix-secrets = {
       url = "git+ssh://git@gitlab.com/fabricesemti/nix-secrets.git?ref=main&shallow=1";
       flake = false;
+    };
+
+    /* ---------------------------------------- inspirations ---------------------------------------- */
+
+    nur-ryan4yin = {
+      url = "github:ryan4yin/nur-packages";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
   };
@@ -79,8 +90,13 @@
   
   let
     inherit (self) outputs;
+
+    /* ---------------------------------------------------------------------------------------------- */
+    /*                                            VARIABLES                                           */
+    /* ---------------------------------------------------------------------------------------------- */
+
     
-    #################### ? -------------------------------------------------------------------> Supported systems for your flake packages, shell, etc.
+    /* ------------------- supported systems for your flake packages, shell, etc. ------------------- */
     systems = [
       "aarch64-linux"
       "i686-linux"
@@ -90,18 +106,22 @@
     ];
     inherit (nixpkgs) lib;
 
-    #################### ? -------------------------------------------------------------------> Load custom stuff
+     /* -------------------------------------- load custom stuff ------------------------------------- */
     # variables from ./var
     configVars = import ./vars { inherit inputs lib; };
     configLib = import ./lib { inherit lib; };
   
     specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
     
-    #################### ? -------------------------------------------------------------------> This is a function that generates an attribute by calling a function you
+     /* ---------- this is a function that generates an attribute by calling a function you ---------- */
     # pass to it, with each system as an argument
     forAllSystems = nixpkgs.lib.genAttrs systems;
 
   in {
+
+    /* ---------------------------------------------------------------------------------------------- */
+    /*                                            SETTINGS                                            */
+    /* ---------------------------------------------------------------------------------------------- */
 
     #TODO: cleanup the next 3 lines - they are replaced in the "Your custom packages.." block
     # # Your custom packages
@@ -118,7 +138,7 @@
         nixpkgs.legacyPackages.${system}.nixpkgs-fmt
       );
 
-    #################### ? -------------------------------------------------------------------> Your custom packages and modifications
+     /* --------------------------- your custom packages and modifications --------------------------- */
     # Custom modifications/overrides to upstream packages
     overlays = import ./overlays {inherit inputs;};
 
@@ -137,7 +157,12 @@
         in import ./pkgs { inherit pkgs; }
       );
 
-    #################### ? -------------------------------------------------------------------> Dev shell
+    /* ---------------------------------------------------------------------------------------------- */
+    /*                                             OUTPUTS                                            */
+    /* ---------------------------------------------------------------------------------------------- */
+
+
+     /* ------------------------------------------ dev shell ----------------------------------------- */
     # Shell configured with packages that are typically only needed when working on or with nix-config.
     devShells = forAllSystems
       (system:
@@ -145,12 +170,13 @@
         in import ./shell.nix { inherit pkgs; }
       );
 
-    #################### NixOS Configurations ####################
+    /* ------------------------------------ nixos configurations ------------------------------------ */
     # NixOS configuration entrypoint
     # Building configurations available through `just rebuild` or `nixos-rebuild --flake .#hostname` #FIXME: review  and fix 'just rebuild'
 
     nixosConfigurations = {
-      /* ---------------------------------------- the first proxmox vm ---------------------------------------- */
+
+      # the first proxmox vm ------------------------------------------------------------------------------------->
       magnus = nixpkgs.lib.nixosSystem {
         inherit specialArgs;
         # specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
@@ -165,7 +191,8 @@
           ./hosts/magnus
         ];
       };
-      /* ---------------------------------------- the second a proxmox vm ---------------------------------------- */
+
+      # the second proxmox vm ------------------------------------------------------------------------------------->
       fulgrim = nixpkgs.lib.nixosSystem {
         inherit specialArgs;
         # specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
@@ -182,25 +209,25 @@
       };      
     };
 
-    # Standalone home-manager configuration entrypoint
-    # Available through 'home-manager --flake .#your-username@your-hostname'
-    homeConfigurations = {
-      "fs@magnus" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs outputs;};
-        modules = [
-          # > Our main home-manager configuration file <
-          ./home-manager/default.nix
-        ];
-      };
-      "fs@fulgrim" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs outputs;};
-        modules = [
-          # > Our main home-manager configuration file <
-          ./home-manager/default.nix
-        ];
-      };      
-    };
+    # # Standalone home-manager configuration entrypoint
+    # # Available through 'home-manager --flake .#your-username@your-hostname'
+    # homeConfigurations = {
+    #   "fs@magnus" = home-manager.lib.homeManagerConfiguration {
+    #     pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+    #     extraSpecialArgs = {inherit inputs outputs;};
+    #     modules = [
+    #       # > Our main home-manager configuration file <
+    #       ./home-manager/default.nix
+    #     ];
+    #   };
+    #   "fs@fulgrim" = home-manager.lib.homeManagerConfiguration {
+    #     pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+    #     extraSpecialArgs = {inherit inputs outputs;};
+    #     modules = [
+    #       # > Our main home-manager configuration file <
+    #       ./home-manager/default.nix
+    #     ];
+    #   };      
+    # };
   };
 }
