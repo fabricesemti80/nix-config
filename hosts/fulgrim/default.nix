@@ -113,6 +113,7 @@ in
   networking = {
     inherit hostName;
     inherit (configVars.networking) defaultGateway nameservers;
+    inherit (myvars.networking.hostsInterface.${hostName}) interfaces;
 
     networkmanager.enable = true;
   };
