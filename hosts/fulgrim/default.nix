@@ -7,7 +7,13 @@
 , configLib
 , configVars
 , ...
-}: {
+}:
+
+let
+  hostName = "fulgrim";
+
+in
+{
   /* -------------------------- # you can import other nixos modules here ------------------------- */
   imports = [
     # If you want to use modules your own flake exports (from modules/nixos):
@@ -94,7 +100,6 @@
 
   /* ----------------------------------------- networking ----------------------------------------- */
   networking = {
-    hostName = "fulgrim";
 
     inherit (configVars.networking) defaultGateway nameservers;
     inherit (configVars.networking.hostsInterface.${hostName}) interfaces;
