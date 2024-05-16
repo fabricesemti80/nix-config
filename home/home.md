@@ -14,5 +14,9 @@ Each user has a folder, an in this folder there is a file for each system the us
     ├── host-template.nix
     └── magnus.nix
 ```
+
 - `magnus.nix` is one host that the user `fs` should have a home on
-- `common` folder containse settings applicable to all hosts; within this `core` is required, `optional` (and/or any of it's subfolders) can be added or ignored for the `fs` user on the `magnus` host
+
+- `common` folder containse settings applicable to all hosts; within this `core` is required
+
+- `optional` (and/or any of it's subfolders) can be added or ignored for the `fs` user on the `magnus` host

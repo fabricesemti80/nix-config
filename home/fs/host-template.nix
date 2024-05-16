@@ -1,7 +1,8 @@
 { configVars, ... }:
 {
   imports = [
-    #################### Hardware Modules ####################
+
+    /* -------------------------------------- hardware modules -------------------------------------- */
     # inputs.hardware.nixosModules.common-cpu-amd
     # inputs.hardware.nixosModules.common-cpu-intel
     # inputs.hardware.nixosModules.common-gpu-nvidia
@@ -9,10 +10,10 @@
     # inputs.hardware.nixosModules.common-pc-ssd
 
 
-    #################### Required Configs ####################
+    /* -------------------------------------- required configs -------------------------------------- */
     ./common/core #required
 
-    #################### Host-specific Optional Configs ####################
+    /* ------------------------------- host-specific optional configs ------------------------------- */
 
 
   ];
@@ -21,6 +22,7 @@
     username = configVars.username;
     homeDirectory = "/home/${configVars.username}";
   };
+  
   # Disable impermanence
   #home.persistence = lib.mkForce { };
 }

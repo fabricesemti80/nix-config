@@ -108,9 +108,12 @@ branch 'dev' set up to track 'origin/dev'.
 Switched to a new branch 'dev'
 ```
 
-- `nix develop` to start a shell with the neccesary tools included
+- `nix develop` to start a shell with the neccesary tools included or do `nix-shell -p git sops just`
 
 - `just age-key` to get a new key of this system
+
+- `just update-nix-secrets` to receive updated secrets
+
 
 ## Work on an exiting machine (with access of the repos)
 
@@ -206,3 +209,4 @@ Then push to the git repo and move on to the new host
 > note: important to note, this time use the systems name; latter on you can rebuild with "just rebuild"
 
 
+#TODO: add new ssh priate key to host and deploy!
