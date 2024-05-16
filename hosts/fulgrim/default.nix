@@ -109,10 +109,10 @@ in
 
   # };
 
-  networking.networkmanager.enable = true;
+  # networking.networkmanager.enable = true;
   networking = {
     inherit hostName;
-    # networkmanager.enable = true;
+    networkmanager.enable = true;
   };
 
 
