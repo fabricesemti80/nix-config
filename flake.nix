@@ -85,7 +85,7 @@
     nixpkgs,
     home-manager,
     vscode-server,
-    nur-ryan4yin
+    nur-ryan4yin,
     ...
   } @ inputs: 
   
