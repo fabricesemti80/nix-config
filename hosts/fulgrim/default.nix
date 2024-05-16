@@ -5,6 +5,7 @@
 { inputs
 , outputs
 , configLib
+, configVars
 , ...
 }: {
   /* -------------------------- # you can import other nixos modules here ------------------------- */
@@ -79,14 +80,24 @@
       efi.canTouchEfiVariables = true;
       timeout = 3;
     };
+    # supported file systems, so we can mount any removable disks with these filesystems
+    supportedFilesystems = [
+      "ext4"
+      "btrfs"
+      "xfs"
+      "fat"
+      "vfat"
+      "exfat"
+    ];
   };
+
 
   /* ----------------------------------------- networking ----------------------------------------- */
   networking.networkmanager.enable = true;
   networking = {
     hostName = "fulgrim";
     # networkmanager.enable = true;
-    enableIPv6 = false;
+    inherit (configVars.networking) nameservers;
   };
 
 
