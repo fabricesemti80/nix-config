@@ -30,11 +30,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1715756862,
-        "narHash": "sha256-cNGZK/RNvb29giR2KtnbwU5lx2Kw+wWqAaeWqfYlPts=",
+        "lastModified": 1715822638,
+        "narHash": "sha256-Z4ZoyK8jYRmBZwMaEZLEmAilrfdpekwwwohliqC14/E=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "cb1d6fba694ab3887600d606106f5a044ba1712c",
+        "rev": "476eef8d85aa09389ae7baf6e6b60357f6a01432",
         "type": "github"
       },
       "original": {
@@ -174,10 +174,10 @@
     "nix-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1715757721,
-        "narHash": "sha256-Q12rzWBNQOPJlnWloB0pOIe2Qw0OqstL8E0MBKRtM+c=",
+        "lastModified": 1715796010,
+        "narHash": "sha256-jXmLThqGpB8qgl+OBwOr86dBYpGFznczlJe2CVnXgpQ=",
         "ref": "main",
-        "rev": "23ac43ad75bb064aae65925f003cd87b68fa40d8",
+        "rev": "45b00e27b917121f2bd6287639ef71aa21af3565",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@gitlab.com/fabricesemti/nix-secrets.git"
