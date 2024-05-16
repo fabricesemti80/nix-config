@@ -6,6 +6,7 @@
 
     ./bash.nix # backup shell
     ./bat.nix # cat with better syntax highlighting and extras like batgrep.
+    ./btop.nix # system monitor
     ./direnv.nix # shell environment manager. Hooks inot shell direnv to look for .envrc before prompts
     ./fonts.nix # core fonts
     ./git.nix # personal git config
@@ -14,7 +15,10 @@
     ./screen.nix # hopefully rarely needed but good to have if so
     ./ssh.nix # personal ssh configs
     ./zoxide.nix # cd replacement
+    ./zellij # terminal workspace
     ./zsh # primary shell: includes zsh, oh-my-zsh, and p10k theme
+
+
 
   ] ++ (builtins.attrValues outputs.homeManagerModules);
 
