@@ -7,7 +7,13 @@
 , configLib
 , configVars
 , ...
-}: {
+}:
+
+let
+  hostName = "magnus";
+
+in
+{
   /* -------------------------- # you can import other nixos modules here ------------------------- */
   imports = [
     # If you want to use modules your own flake exports (from modules/nixos):
@@ -93,11 +99,23 @@
 
 
   /* ----------------------------------------- networking ----------------------------------------- */
-  networking.networkmanager.enable = true;
+  # networking = {
+
+  #   inherit (configVars.networking) defaultGateway nameservers;
+  #   inherit (configVars.networking.hostsInterface.${hostName}) interfaces;
+
+  #   # desktop need its cli for status bar
+  #   networkmanager.enable = true;
+
+  # };
+
+  # networking.networkmanager.enable = true;
   networking = {
-    hostName = "magnus";
-    # networkmanager.enable = true;
-    inherit (configVars.networking) nameservers;
+    inherit hostName;
+    inherit (configVars.networking) defaultGateway nameservers;
+    inherit (configVars.networking.hostsInterface.${hostName}) interfaces;
+
+    networkmanager.enable = true;
   };
 
 
