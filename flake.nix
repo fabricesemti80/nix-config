@@ -40,6 +40,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Remote deployment
+
+    colmena = {
+      url = "github:zhaofengli/colmena";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+
     # VSCode server to allow connection in eeditor - "https://github.com/nix-community/nixos-vscode-server"
     vscode-server = {
       url = "github:nix-community/nixos-vscode-server";
@@ -86,6 +94,7 @@
     , home-manager
     , vscode-server
     , nur-ryan4yin
+    , colmena
     , ...
     } @ inputs:
 
@@ -121,7 +130,6 @@
 
     in
     {
-
       /* ---------------------------------------------------------------------------------------------- */
       /*                                            SETTINGS                                            */
       /* ---------------------------------------------------------------------------------------------- */
@@ -235,11 +243,15 @@
       #   };
       # };
 
+      /* ------------------------------------------- colmena ------------------------------------------ */
       colmena = {
         meta = {
           nixpkgs = import nixpkgs {
             system = "x86_64-linux";
           };
+
+          specialArgs = inputs;
+
         };
 
         # Also see the non-Flakes hive.nix example above.
@@ -249,13 +261,33 @@
         # };
         fulgrim = {
           deployment = {
-            targetHost = "10.0.20.202";
+
+            # Allow local deployment with `colmena apply-local`
+            allowLocalDeployment = true;
+
+
+            targetHost = "fulgrim"; #"10.0.20.202";
             targetPort = 22;
             targetUser = "root";
           };
           boot.isContainer = true;
           time.timeZone = "Europe/London";
         };
+        magnus = {
+          deployment = {
+
+            # Allow local deployment with `colmena apply-local`
+            allowLocalDeployment = true;
+
+
+            targetHost = "magnus"; # "10.0.20.202";
+            targetPort = 22;
+            targetUser = "root";
+          };
+          boot.isContainer = true;
+          time.timeZone = "Europe/London";
+        };
+
       };
 
     };

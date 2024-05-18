@@ -29,7 +29,7 @@
   hostsInterface =
     lib.attrsets.mapAttrs
       (
-        key: val: {
+        _key: val: {
           interfaces."${val.iface}" = {
             useDHCP = false;
             ipv4.addresses = [
@@ -83,8 +83,9 @@
           publicKey = value.publicKey;
         })
         {
-          magnus.publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMsfCPvjBLmDj6JJp/1m6dpBeMfunCIZwsQTBO3Hjc7 root@magnus";
-          fulgrim.publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPyY4dTn8hxAyeEdhppTRpM3NX2rJAqaeu8IZBXPi/3t root@fulgrim";
+          #? https://nixos-and-flakes.thiscute.world/best-practices/remote-deployment#remote-deployment
+          magnus.publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJnzlnkmFirv33D+CuTu0wsk4JVUqZ4Rgk7ybU2hBnrS root@magnus";
+          fulgrim.publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIETObXOI0LG+w5LilczO0eNLfzrWa6 + XGVJgliP9PBNc root@fulgrim";
         };
   };
 }
