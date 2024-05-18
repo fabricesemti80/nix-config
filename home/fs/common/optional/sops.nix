@@ -32,7 +32,7 @@ in
       "private_keys/root@fulgrim" = {
         path = "${homeDirectory}/.ssh/id_root_fulgrim";
       };
-      "private_keys/root@fmagnus" = {
+      "private_keys/root@magnus" = {
         path = "${homeDirectory}/.ssh/id_root_magnus";
       };
 
