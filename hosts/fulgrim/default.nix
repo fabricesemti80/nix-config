@@ -32,7 +32,6 @@ in
     /* ---------------------------- required configs --------------------------- */
     ./hardware-configuration.nix
 
-
     /* ----------------------------------------- core definitions ---------------------------------------- */
     (configLib.relativeToRoot "hosts/common/core")
     (configLib.relativeToRoot "secrets")
@@ -45,6 +44,8 @@ in
     # (configLib.relativeToRoot "hosts/common/optional/msmtp.nix") #FIXME: required for emailing clamav alerts
     (configLib.relativeToRoot "hosts/common/optional/services/openssh.nix")
     (configLib.relativeToRoot "hosts/common/optional/packages")
+
+    (configLib.relativeToRoot "hosts/common/disks/std-disk-config.nix")
 
     /* ---------------------------------------- dev workstations only ---------------------------------------- */
     (configLib.relativeToRoot "hosts/common/optional/devtools")
