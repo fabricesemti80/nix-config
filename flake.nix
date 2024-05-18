@@ -266,7 +266,7 @@
             allowLocalDeployment = true;
 
 
-            targetHost = "fulgrim"; #"10.0.20.202";
+            targetHost = "10.0.20.202";
             targetPort = 22;
             targetUser = "root";
           };
@@ -280,7 +280,7 @@
             allowLocalDeployment = true;
 
 
-            targetHost = "magnus"; # "10.0.20.202";
+            targetHost = "10.0.20.202";
             targetPort = 22;
             targetUser = "root";
           };
