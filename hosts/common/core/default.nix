@@ -4,16 +4,22 @@
   /*                                 CORRE HOST CONFIG FOR ALL HOSTS                                */
   /* ---------------------------------------------------------------------------------------------- */
 
-  /* --------------------------------- basic programs and services -------------------------------- */
+  /* ------------------------- - basic programs and services for all hot -------------------------- */
 
   imports = [
     inputs.home-manager.nixosModules.home-manager
-    ./locale.nix # localization settings
-    ./nix.nix # nix settings and garbage collection
-    # ./sops.nix # secrets management #FIXME: moved this to "secrets" folder
-    ./zsh.nix # load a basic shell just in case we need it without home-manager
 
+    ./locale.nix # localization settings
+
+    ./nix.nix # nix settings and garbage collection
+    ./nixpkgs.nix # nix package settings
+
+    # ./sops.nix # secrets management #FIXME: moved this to "secrets" folder
+
+    ./zsh.nix # load a basic shell just in case we need it without home-manager
     ./services/auto-upgrade.nix # auto-upgrade service
+
+
 
   ] ++ (builtins.attrValues outputs.nixosModules);
 
@@ -32,15 +38,7 @@
 
   home-manager.extraSpecialArgs = { inherit inputs outputs; };
 
-  /* ------------------------------------ nix package defaults ------------------------------------ */
 
-  nixpkgs = {
-    # you can add global overlays here
-    overlays = builtins.attrValues outputs.overlays;
-    config = {
-      allowUnfree = true;
-    };
-  };
 
   /* -------------------------------------- hardware defaults ------------------------------------- */
 
