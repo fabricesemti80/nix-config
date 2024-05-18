@@ -182,8 +182,8 @@ in
   services.openssh = {
     enable = true;
     settings = {
-      # Opinionated: forbid root login through SSH.
-      PermitRootLogin = "no";
+      # root user is used for remote deployment, so we need to allow it
+      PermitRootLogin = "prohibit-password";
       # Opinionated: use keys only.
       # Remove if you want to SSH using passwords
       PasswordAuthentication = false;
