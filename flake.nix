@@ -2,7 +2,7 @@
   description = "Fabrice Semti's Nix config";
 
   inputs = {
-    
+
     /* ---------------------------------------------------------------------------------------------- */
     /*                                       INPUTE REPOSITORIES                                      */
     /* ---------------------------------------------------------------------------------------------- */
@@ -22,11 +22,11 @@
 
     # Home manager
     home-manager = {
-        url = "github:nix-community/home-manager/release-23.11";
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager/release-23.11";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
-     /* ------------------------------------------ utilities ----------------------------------------- */
+    /* ------------------------------------------ utilities ----------------------------------------- */
 
     # Declarative partitioning and formatting
     disko = {
@@ -40,9 +40,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-   # VSCode server to allow connection in eeditor - "https://github.com/nix-community/nixos-vscode-server"
+    # VSCode server to allow connection in eeditor - "https://github.com/nix-community/nixos-vscode-server"
     vscode-server = {
-      url =  "github:nix-community/nixos-vscode-server";
+      url = "github:nix-community/nixos-vscode-server";
     };
 
     # vim4LMFQR!
@@ -62,7 +62,7 @@
     #   url = "github:hyprwm/hyprland-plugins";
     #   inputs.hyprland.follows = "hyprland";
     # };
-    
+
     /* ------------------------------------ personal repositories ----------------------------------- */
     # Private secrets repo.  See ./docs/secretsmgmt.md
     # Authenticate via ssh and use shallow clone
@@ -80,156 +80,168 @@
 
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    vscode-server,
-    nur-ryan4yin,
-    ...
-  } @ inputs: 
-  
-  let
-    inherit (self) outputs;
+  outputs =
+    { self
+    , nixpkgs
+    , home-manager
+    , vscode-server
+    , nur-ryan4yin
+    , ...
+    } @ inputs:
 
-    /* ---------------------------------------------------------------------------------------------- */
-    /*                                            VARIABLES                                           */
-    /* ---------------------------------------------------------------------------------------------- */
+    let
+      inherit (self) outputs;
 
-    
-    /* ------------------- supported systems for your flake packages, shell, etc. ------------------- */
-    systems = [
-      "aarch64-linux"
-      "i686-linux"
-      "x86_64-linux"
-      "aarch64-darwin"
-      "x86_64-darwin"
-    ];
-    inherit (nixpkgs) lib;
-
-     /* -------------------------------------- load custom stuff ------------------------------------- */
-    # variables from ./var
-    configVars = import ./vars { inherit inputs lib; };
-    configLib = import ./lib { inherit lib; };
-  
-    # NOTE: do not forget to import `inputs` here!
-    specialArgs = { inherit inputs outputs configVars configLib nixpkgs nur-ryan4yin; };
-    
-     /* ---------- this is a function that generates an attribute by calling a function you ---------- */
-    # pass to it, with each system as an argument
-    forAllSystems = nixpkgs.lib.genAttrs systems;
-
-  in {
-
-    /* ---------------------------------------------------------------------------------------------- */
-    /*                                            SETTINGS                                            */
-    /* ---------------------------------------------------------------------------------------------- */
-
-    #TODO: cleanup the next 3 lines - they are replaced in the "Your custom packages.." block
-    # # Your custom packages
-    # # Accessible through 'nix build', 'nix shell', etc
-    # packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
-    
-    # # Formatter for your nix files, available through 'nix fmt'
-    # # Other options beside 'alejandra' include 'nixpkgs-fmt'
-    # formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
-    # TODO change this to something that has better looking output rules
-    # Nix formatter available through 'nix fmt' https://nix-community.github.io/nixpkgs-fmt
-    formatter = forAllSystems
-      (system:
-        nixpkgs.legacyPackages.${system}.nixpkgs-fmt
-      );
-
-     /* --------------------------- your custom packages and modifications --------------------------- */
-    # Custom modifications/overrides to upstream packages
-    overlays = import ./overlays {inherit inputs;};
-
-    # Reusable nixos modules you might want to export
-    # These are usually stuff you would upstream into nixpkgs
-    nixosModules = import ./modules/nixos;
-
-    # Reusable home-manager modules you might want to export
-    # These are usually stuff you would upstream into home-manager
-    homeManagerModules = import ./modules/home-manager;
-
-    # Custom packages to be shared or upstreamed.
-    packages = forAllSystems
-      (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
-        in import ./pkgs { inherit pkgs; }
-      );
-
-    /* ---------------------------------------------------------------------------------------------- */
-    /*                                             OUTPUTS                                            */
-    /* ---------------------------------------------------------------------------------------------- */
+      /* ---------------------------------------------------------------------------------------------- */
+      /*                                            VARIABLES                                           */
+      /* ---------------------------------------------------------------------------------------------- */
 
 
-     /* ------------------------------------------ dev shell ----------------------------------------- */
-    # Shell configured with packages that are typically only needed when working on or with nix-config.
-    devShells = forAllSystems
-      (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
-        in import ./shell.nix { inherit pkgs; }
-      );
+      /* ------------------- supported systems for your flake packages, shell, etc. ------------------- */
+      systems = [
+        "aarch64-linux"
+        "i686-linux"
+        "x86_64-linux"
+        "aarch64-darwin"
+        "x86_64-darwin"
+      ];
+      inherit (nixpkgs) lib;
 
-    /* ------------------------------------ nixos configurations ------------------------------------ */
-    # NixOS configuration entrypoint
-    # Building configurations available through `just rebuild` or `nixos-rebuild --flake .#hostname` #FIXME: review  and fix 'just rebuild'
+      /* -------------------------------------- load custom stuff ------------------------------------- */
+      # variables from ./var
+      configVars = import ./vars { inherit inputs lib; };
+      configLib = import ./lib { inherit lib; };
 
-    nixosConfigurations = {
+      # NOTE: do not forget to import `inputs` here!
+      specialArgs = { inherit inputs outputs configVars configLib nixpkgs nur-ryan4yin; };
 
-      # the first proxmox vm ------------------------------------------------------------------------------------->
-      magnus = nixpkgs.lib.nixosSystem {
-        inherit specialArgs;
-        # specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
-        modules = [
-          # Home Manager
-          home-manager.nixosModules.home-manager{
-            home-manager.extraSpecialArgs = specialArgs;
-          }          
-          # Enable VSCode
-          vscode-server.nixosModules.default          
-          # > Our main nixos configuration file <
-          ./hosts/magnus
-        ];
+      /* ---------- this is a function that generates an attribute by calling a function you ---------- */
+      # pass to it, with each system as an argument
+      forAllSystems = nixpkgs.lib.genAttrs systems;
+
+    in
+    {
+
+      /* ---------------------------------------------------------------------------------------------- */
+      /*                                            SETTINGS                                            */
+      /* ---------------------------------------------------------------------------------------------- */
+
+      #TODO: cleanup the next 3 lines - they are replaced in the "Your custom packages.." block
+      # # Your custom packages
+      # # Accessible through 'nix build', 'nix shell', etc
+      # packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+
+      # # Formatter for your nix files, available through 'nix fmt'
+      # # Other options beside 'alejandra' include 'nixpkgs-fmt'
+      # formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+      # TODO change this to something that has better looking output rules
+      # Nix formatter available through 'nix fmt' https://nix-community.github.io/nixpkgs-fmt
+      formatter = forAllSystems
+        (system:
+          nixpkgs.legacyPackages.${system}.nixpkgs-fmt
+        );
+
+      /* --------------------------- your custom packages and modifications --------------------------- */
+      # Custom modifications/overrides to upstream packages
+      overlays = import ./overlays { inherit inputs; };
+
+      # Reusable nixos modules you might want to export
+      # These are usually stuff you would upstream into nixpkgs
+      nixosModules = import ./modules/nixos;
+
+      # Reusable home-manager modules you might want to export
+      # These are usually stuff you would upstream into home-manager
+      homeManagerModules = import ./modules/home-manager;
+
+      # Custom packages to be shared or upstreamed.
+      packages = forAllSystems
+        (system:
+          let pkgs = nixpkgs.legacyPackages.${system};
+          in import ./pkgs { inherit pkgs; }
+        );
+
+      /* ---------------------------------------------------------------------------------------------- */
+      /*                                             OUTPUTS                                            */
+      /* ---------------------------------------------------------------------------------------------- */
+
+
+      /* ------------------------------------------ dev shell ----------------------------------------- */
+      # Shell configured with packages that are typically only needed when working on or with nix-config.
+      devShells = forAllSystems
+        (system:
+          let pkgs = nixpkgs.legacyPackages.${system};
+          in import ./shell.nix { inherit pkgs; }
+        );
+
+      /* ------------------------------------ nixos configurations ------------------------------------ */
+      # NixOS configuration entrypoint
+      # Building configurations available through `just rebuild` or `nixos-rebuild --flake .#hostname` #FIXME: review  and fix 'just rebuild'
+
+      nixosConfigurations = {
+
+        # the first proxmox vm ------------------------------------------------------------------------------------->
+        magnus = nixpkgs.lib.nixosSystem {
+          inherit specialArgs;
+          # specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
+          modules = [
+            # Home Manager
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.extraSpecialArgs = specialArgs;
+            }
+            # Enable VSCode
+            vscode-server.nixosModules.default
+            # > Our main nixos configuration file <
+            ./hosts/magnus
+          ];
+        };
+
+        # the second proxmox vm ------------------------------------------------------------------------------------->
+        fulgrim = nixpkgs.lib.nixosSystem {
+          inherit specialArgs;
+          # specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
+          modules = [
+            # Home Manager
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.extraSpecialArgs = specialArgs;
+            }
+            # Enable VSCode
+            vscode-server.nixosModules.default
+            # > Our main nixos configuration file <
+            ./hosts/fulgrim
+          ];
+        };
+
+        # Colmena - remote deployment via SSH
+        colmena = {
+          meta = {
+            nixpkgs = import nixpkgs {
+              system = "x86_64-linux";
+            };
+          };
+
+        };
+
+        # # Standalone home-manager configuration entrypoint
+        # # Available through 'home-manager --flake .#your-username@your-hostname'
+        # homeConfigurations = {
+        #   "fs@magnus" = home-manager.lib.homeManagerConfiguration {
+        #     pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #     extraSpecialArgs = {inherit inputs outputs;};
+        #     modules = [
+        #       # > Our main home-manager configuration file <
+        #       ./home-manager/default.nix
+        #     ];
+        #   };
+        #   "fs@fulgrim" = home-manager.lib.homeManagerConfiguration {
+        #     pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        #     extraSpecialArgs = {inherit inputs outputs;};
+        #     modules = [
+        #       # > Our main home-manager configuration file <
+        #       ./home-manager/default.nix
+        #     ];
+        #   };
+        # };
       };
-
-      # the second proxmox vm ------------------------------------------------------------------------------------->
-      fulgrim = nixpkgs.lib.nixosSystem {
-        inherit specialArgs;
-        # specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
-        modules = [
-          # Home Manager
-          home-manager.nixosModules.home-manager{
-            home-manager.extraSpecialArgs = specialArgs;
-          }          
-          # Enable VSCode
-          vscode-server.nixosModules.default          
-          # > Our main nixos configuration file <
-          ./hosts/fulgrim
-        ];
-      };      
-    };
-
-    # # Standalone home-manager configuration entrypoint
-    # # Available through 'home-manager --flake .#your-username@your-hostname'
-    # homeConfigurations = {
-    #   "fs@magnus" = home-manager.lib.homeManagerConfiguration {
-    #     pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-    #     extraSpecialArgs = {inherit inputs outputs;};
-    #     modules = [
-    #       # > Our main home-manager configuration file <
-    #       ./home-manager/default.nix
-    #     ];
-    #   };
-    #   "fs@fulgrim" = home-manager.lib.homeManagerConfiguration {
-    #     pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-    #     extraSpecialArgs = {inherit inputs outputs;};
-    #     modules = [
-    #       # > Our main home-manager configuration file <
-    #       ./home-manager/default.nix
-    #     ];
-    #   };      
-    # };
-  };
-}
+    }
