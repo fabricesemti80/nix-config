@@ -212,36 +212,27 @@
             ./hosts/fulgrim
           ];
         };
-
-        # Colmena - remote deployment via SSH
-        colmena = {
-          meta = {
-            nixpkgs = import nixpkgs {
-              system = "x86_64-linux";
-            };
-          };
-
-        };
-
-        # # Standalone home-manager configuration entrypoint
-        # # Available through 'home-manager --flake .#your-username@your-hostname'
-        # homeConfigurations = {
-        #   "fs@magnus" = home-manager.lib.homeManagerConfiguration {
-        #     pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        #     extraSpecialArgs = {inherit inputs outputs;};
-        #     modules = [
-        #       # > Our main home-manager configuration file <
-        #       ./home-manager/default.nix
-        #     ];
-        #   };
-        #   "fs@fulgrim" = home-manager.lib.homeManagerConfiguration {
-        #     pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        #     extraSpecialArgs = {inherit inputs outputs;};
-        #     modules = [
-        #       # > Our main home-manager configuration file <
-        #       ./home-manager/default.nix
-        #     ];
-        #   };
-        # };
       };
-    }
+
+      # # Standalone home-manager configuration entrypoint
+      # # Available through 'home-manager --flake .#your-username@your-hostname'
+      # homeConfigurations = {
+      #   "fs@magnus" = home-manager.lib.homeManagerConfiguration {
+      #     pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+      #     extraSpecialArgs = {inherit inputs outputs;};
+      #     modules = [
+      #       # > Our main home-manager configuration file <
+      #       ./home-manager/default.nix
+      #     ];
+      #   };
+      #   "fs@fulgrim" = home-manager.lib.homeManagerConfiguration {
+      #     pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+      #     extraSpecialArgs = {inherit inputs outputs;};
+      #     modules = [
+      #       # > Our main home-manager configuration file <
+      #       ./home-manager/default.nix
+      #     ];
+      #   };
+      # };
+    };
+}

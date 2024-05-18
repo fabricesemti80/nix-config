@@ -9,8 +9,7 @@
       #TODO: move some of these to user0only!
 
       ### NIX tools
-      colmena # https://github.com/zhaofengli/colmena
-
+      # colmena # https://github.com/zhaofengli/colmena
       deadnix # ? Find and remove unused code in .nix source files
       nix
       nix-info # ? (Nix package manager information)
