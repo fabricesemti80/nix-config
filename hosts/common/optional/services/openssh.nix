@@ -14,12 +14,15 @@ in
     enable = true;
     ports = [ sshPort ];
     # Fix LPE vulnerability with sudo use SSH_AUTH_SOCK: https://github.com/NixOS/nixpkgs/issues/31611
-    authorizedKeysFiles = lib.mkForce ["/etc/ssh/authorized_keys.d/%u"];
+    authorizedKeysFiles = lib.mkForce [ "/etc/ssh/authorized_keys.d/%u" ];
 
     settings = {
       # Harden
       PasswordAuthentication = false;
-      PermitRootLogin = "no";
+
+      # root user is used for remote deployment, so we need to allow it
+      PermitRootLogin = "prohibit-password";
+
       # Automatically remove stale sockets
       StreamLocalBindUnlink = "yes";
       # Allow forwarding ports to everywhere

@@ -171,18 +171,18 @@ in
     };
   };
 
-  # This setups a SSH server. Very important if you're setting up a headless system.
-  # Feel free to remove if you don't need it.
-  services.openssh = {
-    enable = true;
-    settings = {
-      # root user is used for remote deployment, so we need to allow it
-      PermitRootLogin = "prohibit-password";
-      # Opinionated: use keys only.
-      # Remove if you want to SSH using passwords
-      PasswordAuthentication = false;
-    };
-  };
+  # # This setups a SSH server. Very important if you're setting up a headless system.
+  # # Feel free to remove if you don't need it.
+  # services.openssh = {
+  #   enable = true;
+  #   settings = {
+  #     # root user is used for remote deployment, so we need to allow it
+  #     PermitRootLogin = "prohibit-password";
+  #     # Opinionated: use keys only.
+  #     # Remove if you want to SSH using passwords
+  #     PasswordAuthentication = false;
+  #   };
+  # };
 
   # VirtualBox settings for Hyprland to display correctly
   environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
