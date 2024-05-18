@@ -172,7 +172,6 @@ in
       openssh.authorizedKeys.keys = [
         # Allow connect with your ssh key as the `root` account - https://nixos-and-flakes.thiscute.world/best-practices/remote-deployment#remote-deployment
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIToeo6ZJO0VXyAKlFuoq7e3GFfa9xmb7UhaI6LGHc2t"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJnzlnkmFirv33D + CuTu0wsk4JVUqZ4Rgk7ybU2hBnrS root@nixos"
       ];
     };
   };
