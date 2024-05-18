@@ -123,6 +123,13 @@ in
   services.xserver = {
     layout = "us";
     xkbVariant = "";
+
+    /* -------------------------------------------- gnome ------------------------------------------- */
+    # TODO: move this to a "desktops" config
+    enable = true;
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
+
   };
   console.keyMap = "us";
 
