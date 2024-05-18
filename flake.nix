@@ -234,5 +234,29 @@
       #     ];
       #   };
       # };
+
+      colmena = {
+        meta = {
+          nixpkgs = import nixpkgs {
+            system = "x86_64-linux";
+          };
+        };
+
+        # Also see the non-Flakes hive.nix example above.
+        # host-a = { name, nodes, pkgs, ... }: {
+        #   boot.isContainer = true;
+        #   time.timeZone = nodes.fulgrim.config.time.timeZone;
+        # };
+        fulgrim = {
+          deployment = {
+            targetHost = "10.0.20.202";
+            targetPort = 22;
+            targetUser = "root";
+          };
+          boot.isContainer = true;
+          time.timeZone = "Europe/London";
+        };
+      };
+
     };
 }

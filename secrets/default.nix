@@ -1,4 +1,5 @@
 # hosts level sops. see home/[user]/common/optional/sops.nix for home/user level
+# FIXME: move back to "hosts"
 
 { inputs, configVars, ... }:
 let

@@ -29,6 +29,13 @@ in
       "private_keys/fs" = {
         path = "${homeDirectory}/.ssh/id_ed25519";
       };
+      "private_keys/root@fulgrim" = {
+        path = "${homeDirectory}/.ssh/id_root_fulgrim";
+      };
+      "private_keys/root@fmagnus" = {
+        path = "${homeDirectory}/.ssh/id_root_magnus";
+      };
+
       # "private_keys/mila" = {
       #   path = "${homeDirectory}/.ssh/id_mila";
       # };
