@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------------------------------------------- */
 /*                           # THIS IS YOUR SYSTEM'S CONFIGURATION FILE.                          */
 /* ---------------------------------------------------------------------------------------------- */
-# Use this to configure your system environment (it replaces /etc/nixos/configuration.nix)
+# Use this to configure your system environment (it replaces /etc/nixos/configuration.nix).nix/home/fs/projects/nix-config/flake.nix
 { inputs
 , outputs
 , configLib
@@ -35,7 +35,7 @@ in
 
     /* ----------------------------------------- core definitions ---------------------------------------- */
     (configLib.relativeToRoot "hosts/common/core")
-
+    (configLib.relativeToRoot "secrets")
 
     /* --------------------------------------- optional configurations --------------------------------------- */
     # (configLib.relativeToRoot "hosts/common/optional/yubikey")

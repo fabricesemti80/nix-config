@@ -35,6 +35,7 @@ in
 
     /* ----------------------------------------- core definitions ---------------------------------------- */
     (configLib.relativeToRoot "hosts/common/core")
+    (configLib.relativeToRoot "secrets")
 
 
     /* --------------------------------------- optional configurations --------------------------------------- */
