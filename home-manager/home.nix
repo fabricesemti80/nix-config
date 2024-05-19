@@ -45,9 +45,10 @@
     };
   };
 
+  # TODO: Set your username
   home = {
-    username = "fs";
-    homeDirectory = "/home/fs";
+    username = "your-username";
+    homeDirectory = "/home/your-username";
   };
 
   # Add stuff for your user as you see fit:
