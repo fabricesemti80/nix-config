@@ -45,15 +45,17 @@
     };
   };
 
-  # TODO: Set your username
   home = {
-    username = "your-username";
-    homeDirectory = "/home/your-username";
+    username = "fs";
+    homeDirectory = "/home/fs";
   };
 
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
-  # home.packages = with pkgs; [ steam ];
+  home.packages = with pkgs; [ 
+       _1password-gui     
+        git
+ ];
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
