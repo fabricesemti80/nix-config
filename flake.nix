@@ -280,7 +280,7 @@
             allowLocalDeployment = true;
 
 
-            targetHost = "10.0.20.202";
+            targetHost = "10.0.20.201";
             targetPort = 22;
             targetUser = "root";
           };

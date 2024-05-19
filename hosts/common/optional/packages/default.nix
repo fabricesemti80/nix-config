@@ -48,6 +48,8 @@
       httpie # ? (Command-line HTTP client)
       wget # ? (Command-line utility to download files from the web)
 
+      nmap # ?  A utility for network discovery and security auditing
+
     ];
   };
 }
