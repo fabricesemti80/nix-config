@@ -6,10 +6,10 @@
       # ---- SYSTEM SETTINGS ---- #
       systemSettings = {
         system = "x86_64-linux"; # system arch
-        hostname = "snowfire"; # hostname
-        profile = "personal"; # select a profile defined from my profiles directory
-        timezone = "America/Chicago"; # select timezone
-        locale = "en_US.UTF-8"; # select locale
+        hostname = "horus"; # hostname
+        profile = "homelab"; # select a profile defined from my profiles directory
+        timezone = "Europe/London"; # select timezone
+        locale = "en_GB.UTF-8"; # select locale
         bootMode = "uefi"; # uefi or bios
         bootMountPath = "/boot"; # mount path for efi boot partition; only used for uefi boot mode
         grubDevice = ""; # device identifier for grub; only used for legacy (bios) boot mode
@@ -17,10 +17,10 @@
 
       # ----- USER SETTINGS ----- #
       userSettings = rec {
-        username = "emmet"; # username
-        name = "Emmet"; # name/identifier
-        email = "emmet@librephoenix.com"; # email (used for certain configurations)
-        dotfilesDir = "~/.dotfiles"; # absolute path of the local repo
+        username = "fs"; # username
+        name = "Fabrice Semti"; # name/identifier
+        email = "fabrice@fabricesemti.com"; # email (used for certain configurations)
+        dotfilesDir = "~/projects/nix-config"; # absolute path of the local repo
         theme = "uwunicorn-yt"; # selcted theme from my themes directory (./themes/)
         wm = "hyprland"; # Selected window manager or desktop environment; must select one in both ./user/wm/ and ./system/wm/
         # window manager type (hyprland or x11) translator
