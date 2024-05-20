@@ -1,182 +1,252 @@
 {
-  description = "Fabrice Semti's Nix config";
+  description = "Flake of LibrePhoenix";
+
+  outputs = inputs@{ self, ... }:
+    let
+      # ---- SYSTEM SETTINGS ---- #
+      systemSettings = {
+        system = "x86_64-linux"; # system arch
+        hostname = "snowfire"; # hostname
+        profile = "personal"; # select a profile defined from my profiles directory
+        timezone = "America/Chicago"; # select timezone
+        locale = "en_US.UTF-8"; # select locale
+        bootMode = "uefi"; # uefi or bios
+        bootMountPath = "/boot"; # mount path for efi boot partition; only used for uefi boot mode
+        grubDevice = ""; # device identifier for grub; only used for legacy (bios) boot mode
+      };
+
+      # ----- USER SETTINGS ----- #
+      userSettings = rec {
+        username = "emmet"; # username
+        name = "Emmet"; # name/identifier
+        email = "emmet@librephoenix.com"; # email (used for certain configurations)
+        dotfilesDir = "~/.dotfiles"; # absolute path of the local repo
+        theme = "uwunicorn-yt"; # selcted theme from my themes directory (./themes/)
+        wm = "hyprland"; # Selected window manager or desktop environment; must select one in both ./user/wm/ and ./system/wm/
+        # window manager type (hyprland or x11) translator
+        wmType = if (wm == "hyprland") then "wayland" else "x11";
+        browser = "qutebrowser"; # Default browser; must select one from ./user/app/browser/
+        defaultRoamDir = "Personal.p"; # Default org roam directory relative to ~/Org
+        term = "alacritty"; # Default terminal command;
+        font = "Intel One Mono"; # Selected font
+        fontPkg = pkgs.intel-one-mono; # Font package
+        editor = "emacsclient"; # Default editor;
+        # editor spawning translator
+        # generates a command that can be used to spawn editor inside a gui
+        # EDITOR and TERM session variables must be set in home.nix or other module
+        # I set the session variable SPAWNEDITOR to this in my home.nix for convenience
+        spawnEditor = if (editor == "emacsclient") then
+                        "emacsclient -c -a 'emacs'"
+                      else
+                        (if ((editor == "vim") ||
+                             (editor == "nvim") ||
+                             (editor == "nano")) then
+                               "exec " + term + " -e " + editor
+                         else
+                           editor);
+      };
+
+      # create patched nixpkgs
+      nixpkgs-patched =
+        (import inputs.nixpkgs { system = systemSettings.system; }).applyPatches {
+          name = "nixpkgs-patched";
+          src = inputs.nixpkgs;
+          patches = [ ./patches/emacs-no-version-check.patch ];
+        };
+
+      # configure pkgs
+      # use nixpkgs if running a server (homelab or worklab profile)
+      # otherwise use patched nixos-unstable nixpkgs
+      pkgs = (if ((systemSettings.profile == "homelab") || (systemSettings.profile == "worklab"))
+              then
+                pkgs-stable
+              else
+                (import nixpkgs-patched {
+                  system = systemSettings.system;
+                  config = {
+                    allowUnfree = true;
+                    allowUnfreePredicate = (_: true);
+                  };
+                  overlays = [ inputs.rust-overlay.overlays.default ];
+                }));
+
+      pkgs-stable = import inputs.nixpkgs-stable {
+        system = systemSettings.system;
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = (_: true);
+        };
+      };
+
+      pkgs-emacs = import inputs.emacs-pin-nixpkgs {
+        system = systemSettings.system;
+      };
+
+      pkgs-kdenlive = import inputs.kdenlive-pin-nixpkgs {
+        system = systemSettings.system;
+      };
+
+      # configure lib
+      # use nixpkgs if running a server (homelab or worklab profile)
+      # otherwise use patched nixos-unstable nixpkgs
+      lib = (if ((systemSettings.profile == "homelab") || (systemSettings.profile == "worklab"))
+             then
+               inputs.nixpkgs-stable.lib
+             else
+               inputs.nixpkgs.lib);
+
+      # use home-manager-stable if running a server (homelab or worklab profile)
+      # otherwise use home-manager-unstable
+      home-manager = (if ((systemSettings.profile == "homelab") || (systemSettings.profile == "worklab"))
+             then
+               inputs.home-manager-stable
+             else
+               inputs.home-manager-unstable);
+
+      # Systems that can run tests:
+      supportedSystems = [ "aarch64-linux" "i686-linux" "x86_64-linux" ];
+
+      # Function to generate a set based on supported systems:
+      forAllSystems = inputs.nixpkgs.lib.genAttrs supportedSystems;
+
+      # Attribute set of nixpkgs for each system:
+      nixpkgsFor =
+        forAllSystems (system: import inputs.nixpkgs { inherit system; });
+
+    in {
+      homeConfigurations = {
+        user = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            (./. + "/profiles" + ("/" + systemSettings.profile) + "/home.nix") # load home.nix from selected PROFILE
+          ];
+          extraSpecialArgs = {
+            # pass config variables from above
+            inherit pkgs-stable;
+            inherit pkgs-emacs;
+            inherit pkgs-kdenlive;
+            inherit systemSettings;
+            inherit userSettings;
+            inherit inputs;
+          };
+        };
+      };
+      nixosConfigurations = {
+        system = lib.nixosSystem {
+          system = systemSettings.system;
+          modules = [
+            (./. + "/profiles" + ("/" + systemSettings.profile) + "/configuration.nix")
+            ./system/bin/phoenix.nix
+          ]; # load configuration.nix from selected PROFILE
+          specialArgs = {
+            # pass config variables from above
+            inherit pkgs-stable;
+            inherit systemSettings;
+            inherit userSettings;
+            inherit inputs;
+          };
+        };
+      };
+
+      packages = forAllSystems (system:
+        let pkgs = nixpkgsFor.${system};
+        in {
+          default = self.packages.${system}.install;
+
+          install = pkgs.writeShellApplication {
+            name = "install";
+            runtimeInputs = with pkgs; [ git ]; # I could make this fancier by adding other deps
+            text = ''${./install.sh} "$@"'';
+          };
+        });
+
+      apps = forAllSystems (system: {
+        default = self.apps.${system}.install;
+
+        install = {
+          type = "app";
+          program = "${self.packages.${system}.install}/bin/install";
+        };
+      });
+    };
 
   inputs = {
-    
-    #################### ? -------------------------------------------------------------------> Official NixOS and HM Package Sources 
+    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "nixpkgs/nixos-23.11";
+    emacs-pin-nixpkgs.url = "nixpkgs/f72123158996b8d4449de481897d855bc47c7bf6";
+    kdenlive-pin-nixpkgs.url = "nixpkgs/cfec6d9203a461d9d698d8a60ef003cac6d0da94";
 
-    nixpkgs = {
-      url = "github:nixos/nixpkgs/nixos-23.11";
+    home-manager-unstable.url = "github:nix-community/home-manager/master";
+    home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs";
+
+    home-manager-stable.url = "github:nix-community/home-manager/release-23.11";
+    home-manager-stable.inputs.nixpkgs.follows = "nixpkgs-stable";
+
+    hyprland.url = "github:hyprwm/Hyprland/cba1ade848feac44b2eda677503900639581c3f4?submodules=1";
+    hyprland-plugins.url = "github:hyprwm/hyprland-plugins";
+    hyprland-plugins.inputs.hyprland.follows = "hyprland";
+    hycov.url = "github:DreamMaoMao/hycov/115cba558d439cc25d62ce38b7c62cde83f50ef5";
+    hycov.inputs.hyprland.follows = "hyprland";
+
+    nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
+    nix-doom-emacs.inputs.nixpkgs.follows = "emacs-pin-nixpkgs";
+
+    nix-straight.url = "github:librephoenix/nix-straight.el/pgtk-patch";
+    nix-straight.flake = false;
+    nix-doom-emacs.inputs.nix-straight.follows = "nix-straight";
+
+    eaf = {
+      url = "github:emacs-eaf/emacs-application-framework";
+      flake = false;
     };
-
-    nixpkgs-unstable = {
-      url = "github:nixos/nixpkgs/nixos-unstable";
+    eaf-browser = {
+      url = "github:emacs-eaf/eaf-browser";
+      flake = false;
     };
-    hardware = {
-      url = "github:nixos/nixos-hardware";
+    org-nursery = {
+      url = "github:chrisbarrett/nursery";
+      flake = false;
     };
-
-    # Home manager
-    home-manager = {
-        url = "github:nix-community/home-manager/release-23.11";
-        inputs.nixpkgs.follows = "nixpkgs";
+    org-yaap = {
+      url = "gitlab:tygrdev/org-yaap";
+      flake = false;
     };
-
-    #################### ? ------------------------------------------------------------------->  Utilities 
-
-    # Declarative partitioning and formatting
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
+    org-side-tree = {
+      url = "github:localauthor/org-side-tree";
+      flake = false;
     };
-
-    # Secrets management. See ./docs/secretsmgmt.md
-    sops-nix = {
-      url = "github:mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+    org-timeblock = {
+      url = "github:ichernyshovvv/org-timeblock";
+      flake = false;
     };
-
-   # VSCode server to allow connection in eeditor - "https://github.com/nix-community/nixos-vscode-server"
-    vscode-server = {
-      url =  "github:nix-community/nixos-vscode-server";
+    org-krita = {
+      url = "github:librephoenix/org-krita";
+      flake = false;
     };
-
-    # vim4LMFQR!
-    nixvim = {
-      url = "github:nix-community/nixvim/nixos-23.11";
-      inputs.nixpkgs.follows = "nixpkgs";
+    org-xournalpp = {
+      url = "gitlab:vherrmann/org-xournalpp";
+      flake = false;
     };
-
-    # Windows management
-    # for now trying to avoid this one because I want stability for my wm
-    # this is the hyprland development flake package / unstable
-    # hyprland = {
-    #   url = "github:hyprwm/hyprland";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-    #   hyprland-plugins = {
-    #   url = "github:hyprwm/hyprland-plugins";
-    #   inputs.hyprland.follows = "hyprland";
-    # };
-    
-    #################### ? -------------------------------------------------------------------> Personal Repositories 
-    # Private secrets repo.  See ./docs/secretsmgmt.md
-    # Authenticate via ssh and use shallow clone
-    nix-secrets = {
-      url = "git+ssh://git@gitlab.com/fabricesemti/nix-secrets.git?ref=main&shallow=1";
+    org-sliced-images = {
+      url = "github:jcfk/org-sliced-images";
+      flake = false;
+    };
+    phscroll = {
+      url = "github:misohena/phscroll";
+      flake = false;
+    };
+    mini-frame = {
+      url = "github:muffinmad/emacs-mini-frame";
       flake = false;
     };
 
-  };
+    stylix.url = "github:danth/stylix";
 
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    vscode-server,
-    ...
-  } @ inputs: 
-  
-  let
-    inherit (self) outputs;
-    
-    #################### ? -------------------------------------------------------------------> Supported systems for your flake packages, shell, etc.
-    systems = [
-      "aarch64-linux"
-      "i686-linux"
-      "x86_64-linux"
-      "aarch64-darwin"
-      "x86_64-darwin"
-    ];
-    inherit (nixpkgs) lib;
+    rust-overlay.url = "github:oxalica/rust-overlay";
 
-    #################### ? -------------------------------------------------------------------> Load custom stuff
-    # variables from ./var
-    configVars = import ./vars { inherit inputs lib; };
-    configLib = import ./lib { inherit lib; };
-  
-    specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
-    
-    #################### ? -------------------------------------------------------------------> This is a function that generates an attribute by calling a function you
-    # pass to it, with each system as an argument
-    forAllSystems = nixpkgs.lib.genAttrs systems;
-
-  in {
-
-    #TODO: cleanup the next 3 lines - they are replaced in the "Your custom packages.." block
-    # # Your custom packages
-    # # Accessible through 'nix build', 'nix shell', etc
-    # packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
-    
-    # # Formatter for your nix files, available through 'nix fmt'
-    # # Other options beside 'alejandra' include 'nixpkgs-fmt'
-    # formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
-    # TODO change this to something that has better looking output rules
-    # Nix formatter available through 'nix fmt' https://nix-community.github.io/nixpkgs-fmt
-    formatter = forAllSystems
-      (system:
-        nixpkgs.legacyPackages.${system}.nixpkgs-fmt
-      );
-
-    #################### ? -------------------------------------------------------------------> Your custom packages and modifications
-    # Custom modifications/overrides to upstream packages
-    overlays = import ./overlays {inherit inputs;};
-
-    # Reusable nixos modules you might want to export
-    # These are usually stuff you would upstream into nixpkgs
-    nixosModules = import ./modules/nixos;
-
-    # Reusable home-manager modules you might want to export
-    # These are usually stuff you would upstream into home-manager
-    homeManagerModules = import ./modules/home-manager;
-
-    # Custom packages to be shared or upstreamed.
-    packages = forAllSystems
-      (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
-        in import ./pkgs { inherit pkgs; }
-      );
-
-    #################### ? -------------------------------------------------------------------> Dev shell
-    # Shell configured with packages that are typically only needed when working on or with nix-config.
-    devShells = forAllSystems
-      (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
-        in import ./shell.nix { inherit pkgs; }
-      );
-
-    #################### NixOS Configurations ####################
-    # NixOS configuration entrypoint
-    # Building configurations available through `just rebuild` or `nixos-rebuild --flake .#hostname` #FIXME: review  and fix 'just rebuild'
-
-    nixosConfigurations = {
-      magnus = nixpkgs.lib.nixosSystem {
-        inherit specialArgs;
-        # specialArgs = { inherit inputs outputs configVars configLib nixpkgs; };
-        modules = [
-          # Home Manager
-          home-manager.nixosModules.home-manager{
-            home-manager.extraSpecialArgs = specialArgs;
-          }          
-          # Enable VSCode
-          vscode-server.nixosModules.default          
-          # > Our main nixos configuration file <
-          ./hosts/magnus
-        ];
-      };
+    blocklist-hosts = {
+      url = "github:StevenBlack/hosts";
+      flake = false;
     };
-
-    # # Standalone home-manager configuration entrypoint
-    # # Available through 'home-manager --flake .#your-username@your-hostname'
-    # homeConfigurations = {
-    #   "fs@magnus" = home-manager.lib.homeManagerConfiguration {
-    #     pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-    #     extraSpecialArgs = {inherit inputs outputs;};
-    #     modules = [
-    #       # > Our main home-manager configuration file <
-    #       ./home-manager/home.nix
-    #     ];
-    #   };
-    # };
   };
 }
