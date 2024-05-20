@@ -8,7 +8,7 @@
     extraSpecialArgs = { inherit inputs outputs; };
     users = {
       # Import your home-manager configuration
-      fs = import ../home-manager/home.nix;
+      fs = import ../../home-manager/home.nix;
     };
   };
 }
