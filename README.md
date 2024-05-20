@@ -1,6 +1,6 @@
 <div align="center">
 <h1>
-<img width="100" src="docs/nixos-ascendancy.png" /> <br>
+<img width="100" src="nixos-ascendancy.png" /> <br>
 </h1>
 </div>
 
