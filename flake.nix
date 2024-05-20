@@ -7,7 +7,7 @@
       systemSettings = {
         system = "x86_64-linux"; # system arch
         hostname = "horus"; # hostname
-        profile = "homelab"; # select a profile defined from my profiles directory
+        profile = "personal"; # select a profile defined from my profiles directory
         timezone = "Europe/London"; # select timezone
         locale = "en_GB.UTF-8"; # select locale
         bootMode = "uefi"; # uefi or bios
