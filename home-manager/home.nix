@@ -53,13 +53,23 @@
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
   home.packages = with pkgs; [ 
-       _1password-gui     
-        git
- ];
+	_1password-gui 
+	git 
+        ripgrep
+  ];
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
   programs.git.enable = true;
+  
+  programs.vscode = {
+  enable = true;
+  extensions = with pkgs.vscode-extensions; [
+    dracula-theme.theme-dracula
+    vscodevim.vim
+    yzhang.markdown-all-in-one
+  ];
+};
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
