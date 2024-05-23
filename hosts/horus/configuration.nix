@@ -28,6 +28,10 @@
 
     # Common
     ../_common/default.nix
+	
+    # - desktop
+    #../_common/desktops/gnome.nix
+    ../_common/desktops/plasma.nix
     
   ];
 
@@ -82,10 +86,6 @@
                 videoDrivers = [ "displaylink" "modesetting" ]; # https://nixos.wiki/wiki/Displaylink
         };
 
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
@@ -125,7 +125,8 @@
       isNormalUser = true;
       openssh.authorizedKeys.keys = [
         # Add your SSH public key(s) here, if you plan on using SSH to connect
-	"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIToeo6ZJO0VXyAKlFuoq7e3GFfa9xmb7UhaI6LGHc2t"
+	#"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIToeo6ZJO0VXyAKlFuoq7e3GFfa9xmb7UhaI6LGHc2t"
+	"ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBJpVWYmXPpqVmlHdixDR//vdfD+sryvYmpH2Dj1/Otx"
       ];
       # Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
       extraGroups = ["networkmanager" "wheel"];
@@ -182,7 +183,7 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+#  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
