@@ -22,14 +22,15 @@ rebuild-post:
 rebuild:
 	just rebuild-pre
 	scripts/system-flake-rebuild.sh
-	# just rebuild-extensions-lite #TODO: investigate and re-enable -->
-	# just rebuild-post #TODO: investigate and re-enable -->
+	
+# just rebuild-extensions-lite #TODO: investigate and re-enable -->
+# just rebuild-post #TODO: investigate and re-enable -->
 
 rebuild-full:
 	just rebuild-pre
 	scripts/system-flake-rebuild.sh
-	# just rebuild-extensions #TODO: investigate and re-enable -->
-	# just rebuild-post #TODO: investigate and re-enable -->
+# just rebuild-extensions #TODO: investigate and re-enable -->
+# just rebuild-post #TODO: investigate and re-enable -->
 
 rebuild-trace:
 	just rebuild-pre
