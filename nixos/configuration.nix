@@ -120,6 +120,13 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+# ADJUSTMENTS/FIXES
+swapDevices = [
+  {
+    device = "/swapfile";
+    size = 8192; # 8GB swap, adjust based on your RAM
+  }
+];
 # OG config << -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   # Bootloader.
