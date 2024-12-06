@@ -121,12 +121,11 @@
   # services.xserver.libinput.enable = true;
 
 # ADJUSTMENTS/FIXES
-swapDevices = [
-  {
-    device = "/swapfile";
-    size = 8192; # 8GB swap, adjust based on your RAM
-  }
-];
+systemd.oomd = {
+  enable = true;
+  enableRootSlice = true;
+  enableUserSlices = true;
+};
 # OG config << -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   # Bootloader.
