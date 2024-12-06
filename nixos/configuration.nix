@@ -120,12 +120,6 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-# ADJUSTMENTS/FIXES
-systemd.oomd = {
-  enable = true;
-  enableRootSlice = true;
-  enableUserSlices = true;
-};
 # OG config << -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   # Bootloader.
